@@ -1,67 +1,110 @@
-# Lilac Nights
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/icon.png" width="112" alt="Lilac Nights">
+</p>
 
-A dark VS Code theme built around a lilac/violet spine, with a small, deliberate
-set of supporting accents. Every color is contrast-checked against the editor
-background (WCAG AA, ≥4.5:1 for text-weight tokens).
+<h1 align="center">Lilac Nights</h1>
 
-## Design rules
+<p align="center">
+  A dark VS Code theme with a lilac spine — built to be read for eight hours straight.
+</p>
 
-1. **Purple carries the structure of the code.** Keywords, storage/modifiers,
-   tags, `self`/`this`, and object properties are all in the violet→lilac ramp,
-   so the theme's identity shows up on nearly every line without shouting.
-2. **Each supporting hue has exactly one job.** No color does double duty in a
-   way that makes two different concepts look alike.
-3. **Attention follows rarity.** Frequent tokens (strings, variables, properties)
-   sit calm and low-contrast-ish; rare, high-signal tokens (keywords, decorators,
-   errors) are the brightest things on screen.
+<p align="center">
+  <a href="https://github.com/caspel26/lilac-nights/releases/latest"><img src="https://img.shields.io/github/v/release/caspel26/lilac-nights?color=b98cff&labelColor=211a2e&style=flat-square" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-d7b8ff?labelColor=211a2e&style=flat-square" alt="MIT"></a>
+  <img src="https://img.shields.io/badge/VS%20Code-%5E1.70-7ab8ff?labelColor=211a2e&style=flat-square" alt="VS Code ^1.70">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview.png" width="720" alt="Lilac Nights previewing a Django model">
+</p>
+
+Most purple themes pick a purple and stop there — everything else drifts into
+whatever hue was lying around. Lilac Nights runs the purple through the parts of
+the code that carry *structure* (keywords, properties, decorators) and gives each
+remaining hue exactly one job. The result stays unmistakably lilac without every
+line looking the same.
 
 ## Palette
 
-### Purple spine
-| Role | Hex | Used for |
-|---|---|---|
-| Violet | `#b98cff` | keywords **incl. flow control** (`return`/`raise`/`await`), tags, badges, buttons, primary UI accent |
-| Lilac | `#d7b8ff` | **properties & attributes** (`session.external_session_id`), HTML/YAML attrs & keys, shell vars, storage/modifiers, `self`/`this`, cursor, focus ring, active borders |
-| Orchid | `#f18ce8` | decorators / macros |
+![Palette](https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/palette.png)
 
-### Supporting accents
-| Role | Hex | Used for |
-|---|---|---|
-| Azure | `#7ab8ff` | functions, methods |
-| Aqua | `#5fe3d4` | operators, regex, escapes, enum members |
-| Honey | `#ffcc80` | classes, types, namespaces, CSS selectors |
-| Sage | `#9ce8a4` | strings |
-| Red | `#ff6b85` | **function parameters**, errors |
-| Coral | `#ff9d7a` | numbers, constants |
+## Three rules it follows
 
+**1. Purple carries the structure.** Keywords, tags, `self`/`this`, and object
+properties all live on the violet → lilac ramp, so the theme's identity shows up
+on nearly every line instead of in one lonely accent.
 
-**Plain variables stay white** (`#e6e0f5`) so attributes stand out against them.
+**2. Each hue has exactly one job.** No color does double duty in a way that makes
+two different concepts look alike. If something is azure, it is callable.
 
-### Surfaces
-`#15111f` chrome · `#1a1526` panels/sidebar · `#211a2e` editor · `#2b2340`
-line highlight · `#372c52` / `#453863` selection & borders
+**3. Brightness tracks importance, not frequency.** Function names outrank string
+literals, because that's the order you read them in. Every syntax color clears
+WCAG AA (≥4.5:1) against the editor background, and the ranking below is
+deliberate rather than accidental:
+
+| Token | Contrast |
+|---|---|
+| plain variables | 13.06 |
+| strings | 11.58 |
+| classes, types | 11.34 |
+| properties, attributes | 9.74 |
+| functions, methods | 8.09 |
+| numbers, constants | 8.27 |
+| parameters | 6.15 |
+| comments | 4.49 |
+
+## What it covers
+
+Beyond the usual: **semantic tokens** (including `variable.classMember`, so
+`session.external_session_id` reads as *variable → attribute* rather than one flat
+blur), symbol icons, inlay hints, ghost text, bracket-pair colorization, testing
+and debug views, notebooks, diff and merge decorations, and all 16 terminal ANSI
+colors.
+
+Extra grammar rules for **Python, TypeScript, YAML, TOML, Dockerfile, shell, SQL,
+`.env`, CSS,** and git commit messages.
 
 ## Install
 
-```sh
-ln -s ~/vscode-themes/lilac-nights ~/.vscode/extensions/lilac-nights
-```
-
-Reload VS Code, then `Cmd+K Cmd+T` → **Lilac Nights**.
-
-## Tweaking
-
-- UI colors: `themes/lilac-nights-color-theme.json` → `"colors"`
-- Grammar syntax colors: → `"tokenColors"`
-- LSP-driven per-symbol colors: → `"semanticTokenColors"`
-
-Reload the window after edits — no rebuild needed.
-
-## Packaging
+**From a release** — download the `.vsix` from
+[Releases](https://github.com/caspel26/lilac-nights/releases/latest), then:
 
 ```sh
-npm install -g @vscode/vsce
-cd ~/vscode-themes/lilac-nights
-vsce package
 code --install-extension lilac-nights-1.0.0.vsix
 ```
+
+**From source:**
+
+```sh
+git clone https://github.com/caspel26/lilac-nights.git
+ln -s "$PWD/lilac-nights" ~/.vscode/extensions/lilac-nights
+```
+
+Then `Cmd+K Cmd+T` → **Lilac Nights**.
+
+The terminal gets all 16 ANSI colors mapped to the same palette:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/terminal.png" width="560" alt="Terminal colors">
+</p>
+
+## Making it yours
+
+Everything lives in one file, [`themes/lilac-nights-color-theme.json`](themes/lilac-nights-color-theme.json):
+
+| Section | Controls |
+|---|---|
+| `colors` | the workbench — chrome, sidebar, terminal, widgets |
+| `tokenColors` | syntax, via TextMate grammar scopes |
+| `semanticTokenColors` | per-symbol colors from the language server |
+
+Reload the window after editing — no build step. To find out which rule is
+painting a token, run **Developer: Inspect Editor Tokens and Scopes** from the
+command palette; it names the winning rule directly.
+
+Semantic tokens override TextMate scopes, which is the usual reason an edit
+appears to do nothing.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
