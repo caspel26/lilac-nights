@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.3]
+
+- Parameters retuned from `#fb92bb` to `#f17ec1`. Same hue-separation goals as
+  1.0.2, refined twice more against real code:
+  - Dimmed lightness/saturation (L .78/S .93 → L .72/S .80) so parameters no
+    longer matched `self`'s brightness — they were competing for attention
+    instead of `self` reading as senior, per the brightness-tracks-importance
+    rule.
+  - Nudged hue from 336.6° to 325°, closing the gap to `self` from 73° to
+    61.5° while keeping a 20° buffer from orchid decorators — about as close
+    as it can get without crowding them.
+
 ## [1.0.2]
 
 - Parameters move from red (`#ff8a8e`) to rose (`#fb92bb`). The old red sat 95°

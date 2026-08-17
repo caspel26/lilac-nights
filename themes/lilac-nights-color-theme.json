@@ -221,7 +221,7 @@
     "editorInlayHint.typeBackground": "#372c5266",
     "editorInlayHint.typeForeground": "#ffcc80",
     "editorInlayHint.parameterBackground": "#372c5266",
-    "editorInlayHint.parameterForeground": "#fb92bb",
+    "editorInlayHint.parameterForeground": "#f17ec1",
     "editorCodeLens.foreground": "#716490",
     "editorGhostText.foreground": "#716490",
     "editorLightBulb.foreground": "#ffcc80",
@@ -440,7 +440,7 @@
     {
       "name": "Parameters",
       "scope": ["variable.parameter"],
-      "settings": { "foreground": "#fb92bb" }
+      "settings": { "foreground": "#f17ec1" }
     },
     {
       "name": "self / this / cls",
@@ -645,7 +645,7 @@
     "property.definition": { "foreground": "#e6e0f5", "italic": false },
     "variable.readonly": { "foreground": "#ff9d7a" },
     "variable.defaultLibrary": { "foreground": "#ff9d7a", "italic": true },
-    "parameter": { "foreground": "#fb92bb" },
+    "parameter": { "foreground": "#f17ec1" },
     "property": { "foreground": "#d7b8ff" },
     "property.readonly": { "foreground": "#d7b8ff", "italic": true },
     "selfParameter": { "foreground": "#b98cff", "italic": true },

@@ -51,7 +51,7 @@ background, and the ranking below is deliberate rather than accidental:
 | properties, attributes | 9.74 |
 | functions, methods | 9.25 |
 | numbers, constants | 8.27 |
-| parameters | 7.93 |
+| parameters | 6.79 |
 | comments | 4.49 |
 
 ## Previews
@@ -128,7 +128,7 @@ the `.vsix` from
 [Releases](https://github.com/caspel26/lilac-nights/releases/latest), then:
 
 ```sh
-code --install-extension lilac-nights-1.0.2.vsix
+code --install-extension lilac-nights-1.0.3.vsix
 ```
 
 **From source:**
