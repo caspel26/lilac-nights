@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Theme file is valid JSON
+        run: |
+          for f in themes/*.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))"
+            echo "ok  $f"
+          done
+
+      - name: Every color is a valid hex value
+        run: node .github/scripts/check-colors.mjs
+
+      - name: Package
+        run: npx --yes @vscode/vsce package --out /tmp/lilac-nights.vsix
+
+      - name: Report package size
+        run: ls -lh /tmp/lilac-nights.vsix
