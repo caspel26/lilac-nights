@@ -1,0 +1,43 @@
+{
+  "name": "lilac-nights",
+  "displayName": "Lilac Nights",
+  "description": "A dark theme with a lilac/violet spine and a full, contrast-checked syntax palette.",
+  "version": "1.0.0",
+  "publisher": "caspel26",
+  "license": "MIT",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "purple",
+    "lilac",
+    "color-theme"
+  ],
+  "galleryBanner": {
+    "color": "#211a2e",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caspel26/lilac-nights.git"
+  },
+  "bugs": {
+    "url": "https://github.com/caspel26/lilac-nights/issues"
+  },
+  "homepage": "https://github.com/caspel26/lilac-nights#readme",
+  "contributes": {
+    "themes": [
+      {
+        "label": "Lilac Nights",
+        "uiTheme": "vs-dark",
+        "path": "./themes/lilac-nights-color-theme.json"
+      }
+    ]
+  }
+}
