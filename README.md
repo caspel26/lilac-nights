@@ -12,7 +12,7 @@
   <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/v/caspel26/lilac-nights?color=b98cff&labelColor=211a2e&style=flat-square&label=open%20vsx" alt="Open VSX"></a>
   <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/dt/caspel26/lilac-nights?color=d7b8ff&labelColor=211a2e&style=flat-square&label=downloads" alt="Downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-d7b8ff?labelColor=211a2e&style=flat-square" alt="MIT"></a>
-  <img src="https://img.shields.io/badge/VS%20Code-%5E1.70-7ab8ff?labelColor=211a2e&style=flat-square" alt="VS Code ^1.70">
+  <img src="https://img.shields.io/badge/VS%20Code-%5E1.70-8ec5ff?labelColor=211a2e&style=flat-square" alt="VS Code ^1.70">
 </p>
 
 <p align="center">
@@ -27,7 +27,9 @@ line looking the same.
 
 ## Palette
 
-![Palette](https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/palette.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/palette.png" width="640" alt="Lilac Nights palette swatches">
+</p>
 
 ## Three rules it follows
 
@@ -59,14 +61,7 @@ background, and the ranking below is deliberate rather than accidental:
 The same rules hold across grammars: violet keywords, honey types, azure
 calls, sage strings, and orchid for whatever the language treats as a
 directive — decorators in Python, attributes in Rust, preprocessor lines in
-C++. Click a language to open its screenshot here:
-
-<details>
-<summary><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Python"></summary>
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-python.png" width="720" alt="Lilac Nights in Python">
-</p>
-</details>
+C++. Python is the sample up top; click a language below to see the rest.
 
 <details>
 <summary><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="TypeScript"></summary>
@@ -128,7 +123,7 @@ the `.vsix` from
 [Releases](https://github.com/caspel26/lilac-nights/releases/latest), then:
 
 ```sh
-code --install-extension lilac-nights-1.0.3.vsix
+code --install-extension lilac-nights-1.0.4.vsix
 ```
 
 **From source:**

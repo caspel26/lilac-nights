@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Render the README preview images.
+"""Render every README image: the six language previews, the terminal mock,
+and the palette swatch sheet.
 
-Colors are read from the theme file itself, so re-running this after a palette
-change keeps the screenshots honest. Tokenizing is done with Pygments, with a
-few refinements for the distinctions this theme cares about (attribute access,
-`self`, parameters) that a generic lexer doesn't draw on its own.
+Every color here is read from the theme file itself (or, for the palette
+labels, the section/description text below), so re-running this after a
+palette change keeps every image honest — including `images/palette.png`,
+which used to be hand-made and drift out of sync. Tokenizing is done with
+Pygments, with a few refinements for the distinctions this theme cares about
+(attribute access, `self`, parameters) that a generic lexer doesn't draw on
+its own.
 
     python3 tools/render_preview.py
 """
@@ -31,7 +35,7 @@ C = {
     "gutter_active": UI["editorLineNumber.activeForeground"],
     "fg": UI["editor.foreground"],
     "border": UI["editorWidget.border"],
-    "keyword": "#b98cff",
+    "keyword": next(r["settings"]["foreground"] for r in THEME["tokenColors"] if r["name"] == "Keywords"),
     "self": SEM["selfParameter"]["foreground"],
     "attr": SEM["property"]["foreground"],
     "func": SEM["function"]["foreground"],
@@ -42,7 +46,8 @@ C = {
     "decorator": SEM["decorator"]["foreground"],
     "operator": SEM["operator"]["foreground"],
     "comment": SEM["comment"]["foreground"],
-    "punct": "#9a8fbd",
+    "punct": next(r["settings"]["foreground"] for r in THEME["tokenColors"] if r["name"] == "Punctuation"),
+    "error": UI["editorError.foreground"],
 }
 
 TRAFFIC = ["#ff5f57", "#febc2e", "#28c840"]
@@ -240,15 +245,17 @@ def window(code, filename, lexer, out_path, size=19, scale=2, highlight=None):
     return out_path, (width // scale, height // scale)
 
 
+PKG_VERSION = json.loads((ROOT / "package.json").read_text())["version"]
+
 TERMINAL = [
-    ("#9ce8a4", "~/vscode-themes/lilac-nights "), ("#d7b8ff", "main "),
-    ("#5fe3d4", "$ "), ("#e6e0f5", "vsce package\n"),
-    ("#716490", " INFO  Files included in the VSIX:\n"),
-    ("#e6e0f5", "lilac-nights-1.0.1.vsix\n"),
-    ("#9a8fbd", "├─ "), ("#e6e0f5", "package.json\n"),
-    ("#9a8fbd", "├─ "), ("#e6e0f5", "icon.png\n"),
-    ("#9a8fbd", "└─ "), ("#ffcc80", "themes/lilac-nights-color-theme.json\n"),
-    ("#9ce8a4", " DONE  "), ("#e6e0f5", "Packaged: 8 files, 25.06 KB\n"),
+    (UI["terminal.ansiGreen"], "~/vscode-themes/lilac-nights "), (C["attr"], "main "),
+    (UI["terminal.ansiCyan"], "$ "), (C["fg"], "vsce package\n"),
+    (C["gutter"], " INFO  Files included in the VSIX:\n"),
+    (C["fg"], f"lilac-nights-{PKG_VERSION}.vsix\n"),
+    (C["punct"], "├─ "), (C["fg"], "package.json\n"),
+    (C["punct"], "├─ "), (C["fg"], "icon.png\n"),
+    (C["punct"], "└─ "), (C["cls"], "themes/lilac-nights-color-theme.json\n"),
+    (UI["terminal.ansiGreen"], " DONE  "), (C["fg"], "Packaged: 8 files, 25.06 KB\n"),
 ]
 
 
@@ -275,6 +282,109 @@ def terminal(out_path, size=19, scale=2):
             if part:
                 d.text((x, y), part, font=F["regular"], fill=color)
                 x += F["regular"].getlength(part)
+
+    img.resize((width // scale, height // scale), Image.LANCZOS).save(out_path)
+    return out_path, (width // scale, height // scale)
+
+
+PALETTE = [
+    ("PURPLE SPINE", [
+        ("Violet", C["keyword"], "keywords, tags"),
+        ("Lilac", C["attr"], "properties, attributes"),
+        ("Orchid", C["decorator"], "decorators, macros"),
+    ]),
+    ("ACCENTS", [
+        ("Azure", C["func"], "functions, methods"),
+        ("Aqua", C["operator"], "operators, regex"),
+        ("Honey", C["cls"], "classes, types"),
+        ("Sage", C["string"], "strings"),
+        ("Rose", C["param"], "parameters"),
+        ("Coral", C["number"], "numbers, constants"),
+        ("Red", C["error"], "errors"),
+    ]),
+    ("SURFACES", [
+        ("Chrome", C["chrome"], "title bar, tabs"),
+        ("Panel", UI["panel.background"], "sidebar, terminal"),
+        ("Editor", C["bg"], "editor background"),
+        ("Line", C["line_hl"], "current line"),
+        ("Select", UI["editor.selectionBackground"], "selection, borders"),
+        ("Comment", C["comment"], "comments"),
+    ]),
+]
+
+
+def _wrap(text, font, max_w):
+    words, lines, cur = text.split(" "), [], ""
+    for w in words:
+        trial = f"{cur} {w}".strip()
+        if font.getlength(trial) > max_w and cur:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = trial
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def palette(out_path, scale=2, cols=4):
+    pad = 44 * scale
+    card_w, gap_x = 150 * scale, 16 * scale
+    pitch = card_w + gap_x
+    swatch_h = 84 * scale
+    header_h = 34 * scale
+    name_gap = 16 * scale
+    text_lh = 21 * scale
+    row_gap = 34 * scale
+    section_gap = 40 * scale
+    swatch_border = "#ffffff20"
+
+    f_header = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", int(13.5 * scale))
+    f_name = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", int(15.5 * scale))
+    f_hex = ImageFont.truetype(MENLO, int(12.5 * scale))
+    f_desc = ImageFont.truetype(UISANS, int(12.5 * scale))
+
+    width = pad * 2 + min(cols, max(len(items) for _, items in PALETTE)) * pitch - gap_x
+
+    # First pass: measure total height.
+    y = pad
+    section_rows = []
+    for title, items in PALETTE:
+        y += header_h
+        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
+        for row in rows:
+            desc_lines = max(len(_wrap(desc, f_desc, card_w)) for _, _, desc in row)
+            row_h = swatch_h + name_gap + text_lh * (2 + desc_lines)
+            y += row_h + row_gap
+        section_rows.append(rows)
+        y += section_gap - row_gap
+    height = y + pad - section_gap + row_gap
+
+    img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, width, height], fill=C["bg"])
+
+    y = pad
+    for (title, items), rows in zip(PALETTE, section_rows):
+        d.text((pad, y), title, font=f_header, fill=C["comment"])
+        y += header_h
+        for row in rows:
+            row_h = 0
+            for i, (name, hexval, desc) in enumerate(row):
+                x = pad + i * pitch
+                d.rounded_rectangle([x, y, x + card_w, y + swatch_h], radius=10 * scale,
+                                     fill=hexval, outline=swatch_border, width=scale)
+                ty = y + swatch_h + name_gap
+                d.text((x, ty), name, font=f_name, fill=C["fg"])
+                ty += text_lh
+                d.text((x, ty), hexval, font=f_hex, fill=C["comment"])
+                ty += text_lh
+                for line in _wrap(desc, f_desc, card_w):
+                    d.text((x, ty), line, font=f_desc, fill=C["gutter"])
+                    ty += text_lh
+                row_h = max(row_h, ty - y)
+            y += row_h + row_gap
+        y += section_gap - row_gap
 
     img.resize((width // scale, height // scale), Image.LANCZOS).save(out_path)
     return out_path, (width // scale, height // scale)
@@ -458,3 +568,4 @@ if __name__ == "__main__":
         out = ROOT / "images" / f"preview-{name}.png"
         print(*window(code, filename, lexer, out, highlight=hl))
     print(*terminal(ROOT / "images" / "terminal.png"))
+    print(*palette(ROOT / "images" / "palette.png"))
