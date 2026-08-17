@@ -9,7 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/caspel26/lilac-nights/releases/latest"><img src="https://img.shields.io/github/v/release/caspel26/lilac-nights?color=b98cff&labelColor=211a2e&style=flat-square" alt="Release"></a>
+  <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/v/caspel26/lilac-nights?color=b98cff&labelColor=211a2e&style=flat-square&label=open%20vsx" alt="Open VSX"></a>
+  <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/dt/caspel26/lilac-nights?color=d7b8ff&labelColor=211a2e&style=flat-square&label=downloads" alt="Downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-d7b8ff?labelColor=211a2e&style=flat-square" alt="MIT"></a>
   <img src="https://img.shields.io/badge/VS%20Code-%5E1.70-7ab8ff?labelColor=211a2e&style=flat-square" alt="VS Code ^1.70">
 </p>
@@ -66,7 +67,15 @@ Extra grammar rules for **Python, TypeScript, YAML, TOML, Dockerfile, shell, SQL
 
 ## Install
 
-**From a release** — download the `.vsix` from
+**From Open VSX** — in VSCodium, Cursor, Windsurf or Gitpod, search *Lilac Nights*
+in the Extensions panel, or:
+
+```sh
+codium --install-extension caspel26.lilac-nights
+```
+
+**From a release** — for stock VS Code, which doesn't search Open VSX. Download
+the `.vsix` from
 [Releases](https://github.com/caspel26/lilac-nights/releases/latest), then:
 
 ```sh
