@@ -61,94 +61,13 @@ calls, sage strings, and orchid for whatever the language treats as a
 directive — decorators in Python, attributes in Rust, preprocessor lines in
 C++. Pick a language:
 
-### Python
-
 <p align="center">
-  <a href="#python"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Python"></a>
-  <a href="#typescript"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
-  <a href="#javascript"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
-  <a href="#go"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Go"></a>
-  <a href="#rust"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Rust"></a>
-  <a href="#c"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="C++"></a>
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-python.png" width="720" alt="Lilac Nights in Python">
-</p>
-
-### TypeScript
-
-<p align="center">
-  <a href="#python"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Python"></a>
-  <a href="#typescript"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
-  <a href="#javascript"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
-  <a href="#go"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Go"></a>
-  <a href="#rust"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Rust"></a>
-  <a href="#c"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="C++"></a>
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-typescript.png" width="720" alt="Lilac Nights in TypeScript">
-</p>
-
-### JavaScript
-
-<p align="center">
-  <a href="#python"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Python"></a>
-  <a href="#typescript"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
-  <a href="#javascript"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
-  <a href="#go"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Go"></a>
-  <a href="#rust"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Rust"></a>
-  <a href="#c"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="C++"></a>
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-javascript.png" width="720" alt="Lilac Nights in JavaScript">
-</p>
-
-### Go
-
-<p align="center">
-  <a href="#python"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Python"></a>
-  <a href="#typescript"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
-  <a href="#javascript"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
-  <a href="#go"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Go"></a>
-  <a href="#rust"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Rust"></a>
-  <a href="#c"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="C++"></a>
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-go.png" width="620" alt="Lilac Nights in Go">
-</p>
-
-### Rust
-
-<p align="center">
-  <a href="#python"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Python"></a>
-  <a href="#typescript"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
-  <a href="#javascript"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
-  <a href="#go"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Go"></a>
-  <a href="#rust"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Rust"></a>
-  <a href="#c"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="C++"></a>
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-rust.png" width="680" alt="Lilac Nights in Rust">
-</p>
-
-### C++
-
-<p align="center">
-  <a href="#python"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Python"></a>
-  <a href="#typescript"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
-  <a href="#javascript"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
-  <a href="#go"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Go"></a>
-  <a href="#rust"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=8a7dad&labelColor=211a2e&color=211a2e" alt="Rust"></a>
-  <a href="#c"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="C++"></a>
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-cpp.png" width="760" alt="Lilac Nights in C++">
+  <a href="https://github.com/caspel26/lilac-nights/blob/main/images/preview-python.png?raw=1"><img src="https://img.shields.io/badge/Python-211a2e?style=for-the-badge&logo=python&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Python"></a>
+  <a href="https://github.com/caspel26/lilac-nights/blob/main/images/preview-typescript.png?raw=1"><img src="https://img.shields.io/badge/TypeScript-211a2e?style=for-the-badge&logo=typescript&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="TypeScript"></a>
+  <a href="https://github.com/caspel26/lilac-nights/blob/main/images/preview-javascript.png?raw=1"><img src="https://img.shields.io/badge/JavaScript-211a2e?style=for-the-badge&logo=javascript&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="JavaScript"></a>
+  <a href="https://github.com/caspel26/lilac-nights/blob/main/images/preview-go.png?raw=1"><img src="https://img.shields.io/badge/Go-211a2e?style=for-the-badge&logo=go&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Go"></a>
+  <a href="https://github.com/caspel26/lilac-nights/blob/main/images/preview-rust.png?raw=1"><img src="https://img.shields.io/badge/Rust-211a2e?style=for-the-badge&logo=rust&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="Rust"></a>
+  <a href="https://github.com/caspel26/lilac-nights/blob/main/images/preview-cpp.png?raw=1"><img src="https://img.shields.io/badge/C%2B%2B-211a2e?style=for-the-badge&logo=cplusplus&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="C++"></a>
 </p>
 
 ## What it covers

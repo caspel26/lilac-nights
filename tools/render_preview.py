@@ -89,7 +89,12 @@ STYLES = {
 }
 
 TYPE_NAMES = {"str", "int", "float", "bool", "bytes", "list", "dict", "set",
-              "tuple", "string", "number", "boolean", "void", "unknown", "any"}
+              "tuple", "string", "number", "boolean", "void", "unknown", "any",
+              # Go and Rust fixed-width primitives
+              "int8", "int16", "int32", "int64", "uint", "uint8", "uint16",
+              "uint32", "uint64", "float32", "float64", "rune", "byte", "error",
+              "f32", "f64", "i8", "i16", "i32", "i64", "u8", "u16", "u32",
+              "u64", "usize", "isize", "char", "double", "long", "size_t"}
 
 
 def style_for(ttype):
@@ -114,6 +119,7 @@ def tokenize(code, lexer):
     depth = 0        # paren depth
     was_def = False  # the last keyword seen was `def`/`function`
     sig_depth = None  # paren depth of the `def name(...)` signature we're in
+    bol = True       # this token is the first thing on its line
     for i, (ttype, value) in enumerate(raw):
         nxt = ""
         for t2, v2 in raw[i + 1:]:
@@ -149,11 +155,18 @@ def tokenize(code, lexer):
                 ttype = Token.Name.Parameter
             elif nxt == "=" and depth > 0:
                 ttype = Token.Name.Parameter
+            # `Title string` / `Tags []string`: a declaration, not a type. The
+            # theme paints declaration sites plain and use sites lilac.
+            elif plain and (nxt in TYPE_NAMES or nxt == "[") and bol:
+                ttype = Token.Name
             elif value[:1].isupper() and not value.isupper() and plain:
                 ttype = Token.Name.Class
 
         if value.strip():
             prev = value.strip()[-1] if value.strip() in ".," else value.strip()
+            bol = False
+        if "\n" in value:
+            bol = True
 
         color, fstyle = style_for(ttype)
         for j, part in enumerate(value.split("\n")):
@@ -334,10 +347,11 @@ export async function loadTracks(path) {
 }
 """),
 
-    ("go", "track.go", GoLexer(), 17, """package track
+    ("go", "track.go", GoLexer(), 19, """package track
 
 import (
     "encoding/json"
+    "fmt"
     "os"
     "sort"
 )
@@ -349,10 +363,24 @@ type Track struct {
     Tags    []string `json:"tags,omitempty"`
 }
 
+// Duration renders the track length as m:ss.
+func (t Track) Duration() string {
+    return fmt.Sprintf("%d:%02d", int(t.Seconds)/60, int(t.Seconds)%60)
+}
+
+func (t Track) Tagged(tag string) bool {
+    for _, candidate := range t.Tags {
+        if candidate == tag {
+            return true
+        }
+    }
+    return false
+}
+
 func Load(path string) ([]Track, error) {
     raw, err := os.ReadFile(path)
     if err != nil {
-        return nil, err
+        return nil, fmt.Errorf("read %s: %w", path, err)
     }
 
     var tracks []Track
