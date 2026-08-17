@@ -445,7 +445,7 @@
     {
       "name": "self / this / cls",
       "scope": ["variable.language", "variable.language.self", "variable.language.this"],
-      "settings": { "foreground": "#d7b8ff", "fontStyle": "italic" }
+      "settings": { "foreground": "#b98cff", "fontStyle": "italic" }
     },
     {
       "name": "Constants",
@@ -638,13 +638,17 @@
 
     "variable": { "foreground": "#e6e0f5" },
     "variable.classMember": { "foreground": "#d7b8ff" },
+    "variable.classMember.declaration": { "foreground": "#e6e0f5", "italic": false },
+    "variable.classMember.definition": { "foreground": "#e6e0f5", "italic": false },
+    "property.declaration": { "foreground": "#e6e0f5", "italic": false },
+    "property.definition": { "foreground": "#e6e0f5", "italic": false },
     "variable.readonly": { "foreground": "#ff9d7a" },
     "variable.defaultLibrary": { "foreground": "#ff9d7a", "italic": true },
     "parameter": { "foreground": "#ff6b85" },
     "property": { "foreground": "#d7b8ff" },
     "property.readonly": { "foreground": "#d7b8ff", "italic": true },
-    "selfParameter": { "foreground": "#d7b8ff", "italic": true },
-    "clsParameter": { "foreground": "#d7b8ff", "italic": true },
+    "selfParameter": { "foreground": "#b98cff", "italic": true },
+    "clsParameter": { "foreground": "#b98cff", "italic": true },
 
     "decorator": { "foreground": "#f18ce8" },
     "macro": { "foreground": "#f18ce8" },

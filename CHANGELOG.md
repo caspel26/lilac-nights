@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1]
+
+- `self` and `cls` move from lilac to violet (`#b98cff`), so `self.attribute`
+  reads as two distinct tokens instead of one flat color.
+- Class fields stay white where they are *declared* and lilac where they are
+  *used*, via `variable.classMember.declaration` and `property.declaration`.
+
 ## [1.0.0]
 
 Initial release.
