@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.2]
+
+- Parameters move from red (`#ff8a8e`) to rose (`#fb92bb`). The old red sat 95°
+  from `self` in hue while being only 18° from numeric literals — too far from
+  the token beside it, too close to the one below it.
+- Functions lift to `#8ec5ff` and strings drop to `#8fdc98`, so the names you
+  scan for outrank the string literals you don't.
+- `variable.classMember.readonly` added, so a constant attribute like
+  `settings.API_KEY` is colored by the theme instead of by whichever
+  single-modifier rule happened to win the tie.
+
 ## [1.0.1]
 
 - `self` and `cls` move from lilac to violet (`#b98cff`), so `self.attribute`

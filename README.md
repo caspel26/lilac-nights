@@ -38,20 +38,20 @@ on nearly every line instead of in one lonely accent.
 **2. Each hue has exactly one job.** No color does double duty in a way that makes
 two different concepts look alike. If something is azure, it is callable.
 
-**3. Brightness tracks importance, not frequency.** Function names outrank string
-literals, because that's the order you read them in. Every syntax color clears
-WCAG AA (≥4.5:1) against the editor background, and the ranking below is
-deliberate rather than accidental:
+**3. Brightness tracks importance, not frequency.** Strings are the most common
+thing in a file and the least worth scanning, so they sit below the names you
+actually look for. Every syntax color clears WCAG AA (≥4.5:1) against the editor
+background, and the ranking below is deliberate rather than accidental:
 
 | Token | Contrast |
 |---|---|
 | plain variables | 13.06 |
-| strings | 11.58 |
 | classes, types | 11.34 |
+| strings | 10.27 |
 | properties, attributes | 9.74 |
-| functions, methods | 8.09 |
+| functions, methods | 9.25 |
 | numbers, constants | 8.27 |
-| parameters | 7.41 |
+| parameters | 7.93 |
 | comments | 4.49 |
 
 ## Previews
@@ -128,7 +128,7 @@ the `.vsix` from
 [Releases](https://github.com/caspel26/lilac-nights/releases/latest), then:
 
 ```sh
-code --install-extension lilac-nights-1.0.1.vsix
+code --install-extension lilac-nights-1.0.2.vsix
 ```
 
 **From source:**
