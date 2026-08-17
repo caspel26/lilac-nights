@@ -51,7 +51,7 @@ deliberate rather than accidental:
 | properties, attributes | 9.74 |
 | functions, methods | 8.09 |
 | numbers, constants | 8.27 |
-| parameters | 6.15 |
+| parameters | 7.41 |
 | comments | 4.49 |
 
 ## Previews

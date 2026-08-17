@@ -5,7 +5,7 @@
   "colors": {
     "focusBorder": "#d7b8ff90",
     "foreground": "#e6e0f5",
-    "descriptionForeground": "#9a8fbd",
+    "descriptionForeground": "#8a7dad",
     "errorForeground": "#ff6b85",
     "textLink.foreground": "#d7b8ff",
     "textLink.activeForeground": "#ecd9ff",
@@ -116,7 +116,7 @@
     "tab.border": "#15111f",
     "tab.hoverBackground": "#2b2340",
     "tab.unfocusedActiveBorderTop": "#5f5479",
-    "breadcrumb.foreground": "#9a8fbd",
+    "breadcrumb.foreground": "#8a7dad",
     "breadcrumb.focusForeground": "#d7b8ff",
     "breadcrumb.background": "#211a2e",
 
@@ -221,8 +221,8 @@
     "editorInlayHint.typeBackground": "#372c5266",
     "editorInlayHint.typeForeground": "#ffcc80",
     "editorInlayHint.parameterBackground": "#372c5266",
-    "editorInlayHint.parameterForeground": "#ff6b85",
-    "editorCodeLens.foreground": "#7d719e",
+    "editorInlayHint.parameterForeground": "#ff8a8e",
+    "editorCodeLens.foreground": "#716490",
     "editorGhostText.foreground": "#716490",
     "editorLightBulb.foreground": "#ffcc80",
     "editorLightBulbAutoFix.foreground": "#5fe3d4",
@@ -262,8 +262,8 @@
     "symbolIcon.numberForeground": "#ff9d7a",
     "symbolIcon.stringForeground": "#9ce8a4",
     "symbolIcon.booleanForeground": "#ff9d7a",
-    "symbolIcon.arrayForeground": "#ffcc80",
-    "symbolIcon.objectForeground": "#ffcc80",
+    "symbolIcon.arrayForeground": "#d7b8ff",
+    "symbolIcon.objectForeground": "#d7b8ff",
     "symbolIcon.keyForeground": "#d7b8ff",
     "symbolIcon.keywordForeground": "#b98cff",
     "symbolIcon.operatorForeground": "#5fe3d4",
@@ -299,7 +299,7 @@
     "debugConsole.infoForeground": "#7ab8ff",
     "debugConsole.warningForeground": "#ffcc80",
     "debugConsole.errorForeground": "#ff6b85",
-    "debugConsole.sourceForeground": "#9a8fbd",
+    "debugConsole.sourceForeground": "#8a7dad",
     "debugTokenExpression.name": "#d7b8ff",
     "debugTokenExpression.value": "#9ce8a4",
     "debugTokenExpression.string": "#9ce8a4",
@@ -440,7 +440,7 @@
     {
       "name": "Parameters",
       "scope": ["variable.parameter"],
-      "settings": { "foreground": "#ff6b85" }
+      "settings": { "foreground": "#ff8a8e" }
     },
     {
       "name": "self / this / cls",
@@ -471,7 +471,7 @@
         "punctuation.terminator",
         "punctuation.accessor"
       ],
-      "settings": { "foreground": "#9a8fbd" }
+      "settings": { "foreground": "#8a7dad" }
     },
     {
       "name": "Tag punctuation",
@@ -638,13 +638,14 @@
 
     "variable": { "foreground": "#e6e0f5" },
     "variable.classMember": { "foreground": "#d7b8ff" },
+    "variable.classMember.readonly": { "foreground": "#d7b8ff", "italic": true },
     "variable.classMember.declaration": { "foreground": "#e6e0f5", "italic": false },
     "variable.classMember.definition": { "foreground": "#e6e0f5", "italic": false },
     "property.declaration": { "foreground": "#e6e0f5", "italic": false },
     "property.definition": { "foreground": "#e6e0f5", "italic": false },
     "variable.readonly": { "foreground": "#ff9d7a" },
     "variable.defaultLibrary": { "foreground": "#ff9d7a", "italic": true },
-    "parameter": { "foreground": "#ff6b85" },
+    "parameter": { "foreground": "#ff8a8e" },
     "property": { "foreground": "#d7b8ff" },
     "property.readonly": { "foreground": "#d7b8ff", "italic": true },
     "selfParameter": { "foreground": "#b98cff", "italic": true },
