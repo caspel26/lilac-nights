@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview.png" width="720" alt="Lilac Nights previewing a Django model">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-python.png" width="720" alt="Lilac Nights in Python">
 </p>
 
 Most purple themes pick a purple and stop there — everything else drifts into
@@ -54,6 +54,47 @@ deliberate rather than accidental:
 | parameters | 6.15 |
 | comments | 4.49 |
 
+## In other languages
+
+The same rules hold across grammars: violet keywords, honey types, azure calls,
+sage strings, orchid for whatever the language uses as a directive — decorators
+in Python, attributes in Rust, preprocessor lines in C++.
+
+<details>
+<summary><b>TypeScript</b></summary>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-typescript.png" width="720" alt="Lilac Nights in TypeScript">
+</p>
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-javascript.png" width="720" alt="Lilac Nights in JavaScript">
+</p>
+</details>
+
+<details>
+<summary><b>Go</b></summary>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-go.png" width="620" alt="Lilac Nights in Go">
+</p>
+</details>
+
+<details>
+<summary><b>Rust</b></summary>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-rust.png" width="680" alt="Lilac Nights in Rust">
+</p>
+</details>
+
+<details>
+<summary><b>C++</b></summary>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-cpp.png" width="760" alt="Lilac Nights in C++">
+</p>
+</details>
+
 ## What it covers
 
 Beyond the usual: **semantic tokens** (including `variable.classMember`, so
@@ -79,7 +120,7 @@ the `.vsix` from
 [Releases](https://github.com/caspel26/lilac-nights/releases/latest), then:
 
 ```sh
-code --install-extension lilac-nights-1.0.0.vsix
+code --install-extension lilac-nights-1.0.1.vsix
 ```
 
 **From source:**

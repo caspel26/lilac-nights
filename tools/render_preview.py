@@ -2,19 +2,21 @@
 """Render the README preview images.
 
 Colors are read from the theme file itself, so re-running this after a palette
-change keeps the screenshots honest.
+change keeps the screenshots honest. Tokenizing is done with Pygments, with a
+few refinements for the distinctions this theme cares about (attribute access,
+`self`, parameters) that a generic lexer doesn't draw on its own.
 
     python3 tools/render_preview.py
 """
 
-import io
 import json
-import keyword
-import os
-import tokenize
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+from pygments import lex
+from pygments.lexers import (CppLexer, GoLexer, JavascriptLexer, PythonLexer,
+                             RustLexer, TypeScriptLexer)
+from pygments.token import Token
 
 ROOT = Path(__file__).resolve().parent.parent
 THEME = json.loads((ROOT / "themes" / "lilac-nights-color-theme.json").read_text())
@@ -24,12 +26,13 @@ SEM = THEME["semanticTokenColors"]
 C = {
     "bg": UI["editor.background"],
     "chrome": UI["titleBar.activeBackground"],
-    "panel": UI["sideBar.background"],
     "line_hl": UI["editor.lineHighlightBackground"],
     "gutter": UI["editorLineNumber.foreground"],
     "gutter_active": UI["editorLineNumber.activeForeground"],
     "fg": UI["editor.foreground"],
+    "border": UI["editorWidget.border"],
     "keyword": "#b98cff",
+    "self": SEM["selfParameter"]["foreground"],
     "attr": SEM["property"]["foreground"],
     "func": SEM["function"]["foreground"],
     "cls": SEM["class"]["foreground"],
@@ -40,161 +43,121 @@ C = {
     "operator": SEM["operator"]["foreground"],
     "comment": SEM["comment"]["foreground"],
     "punct": "#9a8fbd",
-    "border": UI["editorWidget.border"],
 }
 
 TRAFFIC = ["#ff5f57", "#febc2e", "#28c840"]
 MENLO = "/System/Library/Fonts/Menlo.ttc"
 UISANS = "/System/Library/Fonts/Supplemental/Arial.ttf"
 
-SAMPLE = '''from dataclasses import dataclass
+# Pygments token -> (color key, style). Looked up by walking a token's parents,
+# so Token.Literal.String.Double falls back to the Token.Literal.String entry.
+STYLES = {
+    Token.Comment: ("comment", "italic"),
+    # preprocessor directives, Rust attributes, macros: the theme's orchid role
+    Token.Comment.Preproc: ("decorator", "regular"),
+    Token.Comment.PreprocFile: ("string", "regular"),
+    Token.Keyword: ("keyword", "bold"),
+    Token.Keyword.Constant: ("number", "italic"),
+    Token.Keyword.Type: ("cls", "regular"),
+    Token.Name: ("fg", "regular"),
+    Token.Name.Attribute: ("attr", "regular"),
+    Token.Name.Builtin: ("cls", "italic"),
+    Token.Name.Builtin.Pseudo: ("self", "italic"),
+    Token.Name.Class: ("cls", "bold"),
+    Token.Name.Decorator: ("decorator", "regular"),
+    Token.Name.Exception: ("cls", "regular"),
+    Token.Name.Function: ("func", "regular"),
+    Token.Name.Function.Magic: ("func", "italic"),
+    Token.Name.Label: ("attr", "regular"),
+    Token.Name.Namespace: ("cls", "italic"),
+    Token.Name.Other: ("fg", "regular"),
+    Token.Name.Parameter: ("param", "regular"),
+    Token.Name.Tag: ("attr", "regular"),
+    Token.Name.Variable: ("fg", "regular"),
+    Token.Literal: ("string", "regular"),
+    Token.Literal.Number: ("number", "regular"),
+    Token.Literal.String: ("string", "regular"),
+    Token.Literal.String.Doc: ("string", "italic"),
+    Token.Literal.String.Affix: ("keyword", "regular"),
+    Token.Literal.String.Interpol: ("operator", "regular"),
+    Token.Literal.String.Escape: ("operator", "regular"),
+    Token.Operator: ("operator", "regular"),
+    Token.Operator.Word: ("keyword", "bold"),
+    Token.Punctuation: ("punct", "regular"),
+    Token.Text: ("fg", "regular"),
+    Token.Error: ("param", "regular"),
+}
 
-from django.db import models
-from django.http import HttpRequest
-
-
-@dataclass(frozen=True)
-class SessionSummary:
-    """A flattened view of a signing session."""
-
-    external_id: str
-    signer_count: int = 0
-
-
-class Session(models.Model):
-    external_session_id = models.CharField(max_length=64, unique=True)
-    is_active = models.BooleanField(default=True)
-
-    def summarise(self, request: HttpRequest) -> SessionSummary:
-        # only signers who actually opened the envelope
-        signers = self.signers.filter(opened=True)
-        return SessionSummary(
-            external_id=self.external_session_id,
-            signer_count=signers.count(),
-        )
-'''
-
-OPERATORS = {"=", "->", "+", "-", "*", "/", "==", "!=", "<", ">", "<=", ">=", "|", "&", "%", "@="}
-PUNCT = {".", ",", ":", "(", ")", "[", "]", "{", "}", ";"}
-
-
-BUILTIN_TYPES = {"str", "int", "float", "bool", "bytes", "list", "dict", "set", "tuple", "type"}
-
-
-def analyse(src):
-    """Use the AST for the things a token stream can't see on its own.
-
-    Returns the positions of class-body fields (which Pylance reports as
-    `variable.classMember`, hence lilac) and the set of imported module names
-    (reported as namespaces, hence honey).
-    """
-    import ast
-
-    tree = ast.parse(src)
-    fields, namespaces = set(), set()
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            namespaces.update((a.asname or a.name.split(".")[0]) for a in node.names)
-        elif isinstance(node, ast.ImportFrom):
-            namespaces.update(node.module.split(".") if node.module else [])
-            namespaces.update((a.asname or a.name) for a in node.names)
-        elif isinstance(node, ast.ClassDef):
-            for stmt in node.body:
-                targets = (
-                    stmt.targets if isinstance(stmt, ast.Assign)
-                    else [stmt.target] if isinstance(stmt, ast.AnnAssign)
-                    else []
-                )
-                for t in targets:
-                    if isinstance(t, ast.Name):
-                        fields.add((t.lineno, t.col_offset))
-    return fields, namespaces
+TYPE_NAMES = {"str", "int", "float", "bool", "bytes", "list", "dict", "set",
+              "tuple", "string", "number", "boolean", "void", "unknown", "any"}
 
 
-def classify(src):
-    """Yield (row, col, text, color, style) for each token."""
-    fields, namespaces = analyse(src)
-    toks = [
-        t
-        for t in tokenize.generate_tokens(io.StringIO(src).readline)
-        if t.type not in (tokenize.ENCODING, tokenize.NEWLINE, tokenize.NL, tokenize.INDENT,
-                          tokenize.DEDENT, tokenize.ENDMARKER)
-    ]
+def style_for(ttype):
+    t = ttype
+    while t is not None:
+        if t in STYLES:
+            key, style = STYLES[t]
+            return C[key], style
+        t = t.parent
+    return C["fg"], "regular"
+
+
+def tokenize(code, lexer):
+    """Pygments tokens, split to one entry per line, with local refinements."""
+    raw = [(t, v) for t, v in lex(code, lexer) if v]
+
+    # Refinement pass: Pygments emits a bare Token.Name for most identifiers.
+    # Decide what each one actually is from its neighbours, the same way the
+    # language server would.
     out = []
-    depth = 0            # paren depth
-    in_params = False    # inside a `def name(...)` signature
-    param_slot = False   # next NAME at depth 1 is a parameter
-    in_decorator = False
+    prev = ""        # previous non-whitespace token text
+    depth = 0        # paren depth
+    was_def = False  # the last keyword seen was `def`/`function`
+    sig_depth = None  # paren depth of the `def name(...)` signature we're in
+    for i, (ttype, value) in enumerate(raw):
+        nxt = ""
+        for t2, v2 in raw[i + 1:]:
+            if v2.strip():
+                nxt = v2.strip()
+                break
 
-    for i, t in enumerate(toks):
-        prev = toks[i - 1].string if i else ""
-        nxt = toks[i + 1].string if i + 1 < len(toks) else ""
-        s, ttype = t.string, t.type
-        color, style = C["fg"], "regular"
+        if value.strip() in ("def", "function"):
+            was_def = True
 
-        if ttype == tokenize.COMMENT:
-            color, style = C["comment"], "italic"
-            in_decorator = False
-        elif ttype == tokenize.STRING:
-            color = C["string"]
-            if s.startswith(('"""', "'''")):
-                style = "italic"
-        elif ttype == tokenize.NUMBER:
-            color = C["number"]
-        elif ttype == tokenize.OP:
-            if s == "@" and prev in ("", "\n"):
-                color, in_decorator = C["decorator"], True
-            elif s in PUNCT:
-                color = C["punct"]
-            elif s in OPERATORS:
-                color = C["operator"]
-            else:
-                color = C["punct"]
+        if value == "(":
+            depth += 1
+            if was_def and sig_depth is None:
+                sig_depth, was_def = depth, False
+        elif value == ")":
+            if sig_depth == depth:
+                sig_depth = None
+            depth -= 1
 
-            if s == "(":
-                depth += 1
-                if in_params and depth == 1:
-                    param_slot = True
-            elif s == ")":
-                depth -= 1
-                if depth == 0:
-                    in_params = param_slot = False
-                    in_decorator = False
-            elif s == "," and in_params and depth == 1:
-                param_slot = True
-            elif s in (":", "="):
-                param_slot = False
-        elif ttype == tokenize.NAME:
-            if in_decorator:
-                color = C["decorator"]
-            elif s in ("self", "cls"):
-                color, style = C["attr"], "italic"
-            elif keyword.iskeyword(s) or s in ("match", "case"):
-                color, style = C["keyword"], "bold"
-                if s == "def":
-                    in_params = True
-            elif (t.start[0], t.start[1]) in fields:
-                color = C["attr"]
-            elif s in namespaces or s in BUILTIN_TYPES:
-                color = C["cls"]
-            elif prev == "def":
-                color = C["func"]
-            elif prev == "class":
-                color, style = C["cls"], "bold"
-            elif in_params and param_slot and depth == 1:
-                color, param_slot = C["param"], False
+        if ttype in Token.Name and ttype not in Token.Name.Decorator:
+            in_signature = sig_depth is not None and depth == sig_depth
+            plain = ttype in (Token.Name, Token.Name.Other)
+            if value in ("self", "this", "cls"):
+                ttype = Token.Name.Builtin.Pseudo
             elif prev == ".":
-                color = C["func"] if nxt == "(" else C["attr"]
-            elif nxt == "(":
-                color = C["func"]
-            elif s[:1].isupper():
-                color = C["cls"]
-            elif nxt == "=" and depth >= 1:
-                color = C["param"]
-        else:
-            continue
+                ttype = Token.Name.Function if nxt == "(" else Token.Name.Attribute
+            elif nxt == "(" and plain:
+                ttype = Token.Name.Function
+            elif value in TYPE_NAMES:
+                ttype = Token.Keyword.Type
+            # a parameter in a signature, or a keyword argument at a call site
+            elif in_signature and prev in ("(", ",", "*", "**"):
+                ttype = Token.Name.Parameter
+            elif nxt == "=" and depth > 0:
+                ttype = Token.Name.Parameter
+            elif value[:1].isupper() and not value.isupper() and plain:
+                ttype = Token.Name.Class
 
-        out.append((t.start[0], t.start[1], s, color, style))
+        if value.strip():
+            prev = value.strip()[-1] if value.strip() in ".," else value.strip()
+
+        color, fstyle = style_for(ttype)
+        for j, part in enumerate(value.split("\n")):
+            out.append((part, color, fstyle, j > 0))
     return out
 
 
@@ -206,8 +169,21 @@ def fonts(size):
     }
 
 
-def window(src, filename, out_path, size=19, scale=2, highlight=None):
-    lines = src.rstrip("\n").split("\n")
+def _chrome(d, width, title, title_h, pad, radius, scale, fill):
+    d.rounded_rectangle([0, 0, width - 1, title_h + radius], radius=radius, fill=fill)
+    d.rectangle([0, title_h - 1, width - 1, title_h], fill=C["border"])
+    r = 6 * scale
+    for i, col in enumerate(TRAFFIC):
+        cx = pad + i * (r * 2 + 8 * scale) + r
+        d.ellipse([cx - r, title_h // 2 - r, cx + r, title_h // 2 + r], fill=col)
+    fui = ImageFont.truetype(UISANS, int(12.5 * scale))
+    tw = d.textlength(title, font=fui)
+    d.text(((width - tw) / 2, (title_h - int(15 * scale)) / 2), title, font=fui, fill=C["gutter"])
+
+
+def window(code, filename, lexer, out_path, size=19, scale=2, highlight=None):
+    code = code.rstrip("\n")
+    lines = code.split("\n")
     F = fonts(size * scale)
     cw = F["regular"].getlength("M")
     lh = int(size * scale * 1.62)
@@ -215,27 +191,14 @@ def window(src, filename, out_path, size=19, scale=2, highlight=None):
     pad = 18 * scale
     gutter = int(cw * 4)
     title_h = 38 * scale
-    body_h = lh * len(lines) + pad * 2
     width = int(pad * 2 + gutter + cw * (max(len(l) for l in lines) + 3))
-    height = title_h + body_h
+    height = title_h + lh * len(lines) + pad * 2
+    radius = 11 * scale
 
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    radius = 11 * scale
-
     d.rounded_rectangle([0, 0, width - 1, height - 1], radius=radius, fill=C["bg"])
-    d.rounded_rectangle([0, 0, width - 1, title_h + radius], radius=radius, fill=C["chrome"])
-    d.rectangle([0, title_h - 1, width - 1, title_h], fill=C["border"])
-
-    r = 6 * scale
-    for i, col in enumerate(TRAFFIC):
-        cx = pad + i * (r * 2 + 8 * scale) + r
-        cy = title_h // 2
-        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=col)
-
-    fui = ImageFont.truetype(UISANS, int(12.5 * scale))
-    tw = d.textlength(filename, font=fui)
-    d.text(((width - tw) / 2, (title_h - int(15 * scale)) / 2), filename, font=fui, fill=C["gutter"])
+    _chrome(d, width, filename, title_h, pad, radius, scale, C["chrome"])
 
     y0 = title_h + pad
     if highlight:
@@ -243,34 +206,36 @@ def window(src, filename, out_path, size=19, scale=2, highlight=None):
         d.rectangle([1, yy - 2, width - 2, yy + lh - 2], fill=C["line_hl"])
 
     for n in range(1, len(lines) + 1):
-        active = n == highlight
         num = str(n)
         d.text(
             (pad + gutter - cw - F["regular"].getlength(num), y0 + (n - 1) * lh),
             num,
             font=F["regular"],
-            fill=C["gutter_active"] if active else C["gutter"],
+            fill=C["gutter_active"] if n == highlight else C["gutter"],
         )
 
     x0 = pad + gutter + cw
-    for row, col, text, color, style in classify(src):
-        d.text((x0 + col * cw, y0 + (row - 1) * lh), text, font=F[style], fill=color)
+    x, row = x0, 0
+    for text, color, fstyle, newline in tokenize(code, lexer):
+        if newline:
+            row, x = row + 1, x0
+        if text:
+            d.text((x, y0 + row * lh), text, font=F[fstyle], fill=color)
+            x += F[fstyle].getlength(text)
 
     img.resize((width // scale, height // scale), Image.LANCZOS).save(out_path)
     return out_path, (width // scale, height // scale)
 
 
 TERMINAL = [
-    ("#9ce8a4", "~/vscode-themes/lilac-nights "),
-    ("#d7b8ff", "main "),
-    ("#5fe3d4", "$ "),
-    ("#e6e0f5", "vsce package\n"),
+    ("#9ce8a4", "~/vscode-themes/lilac-nights "), ("#d7b8ff", "main "),
+    ("#5fe3d4", "$ "), ("#e6e0f5", "vsce package\n"),
     ("#716490", " INFO  Files included in the VSIX:\n"),
-    ("#e6e0f5", "lilac-nights-1.0.0.vsix\n"),
+    ("#e6e0f5", "lilac-nights-1.0.1.vsix\n"),
     ("#9a8fbd", "├─ "), ("#e6e0f5", "package.json\n"),
     ("#9a8fbd", "├─ "), ("#e6e0f5", "icon.png\n"),
     ("#9a8fbd", "└─ "), ("#ffcc80", "themes/lilac-nights-color-theme.json\n"),
-    ("#9ce8a4", " DONE  "), ("#e6e0f5", "Packaged: 8 files, 17.01 KB\n"),
+    ("#9ce8a4", " DONE  "), ("#e6e0f5", "Packaged: 8 files, 25.06 KB\n"),
 ]
 
 
@@ -278,27 +243,16 @@ def terminal(out_path, size=19, scale=2):
     F = fonts(size * scale)
     cw = F["regular"].getlength("M")
     lh = int(size * scale * 1.62)
-    pad = 18 * scale
-    title_h = 38 * scale
-
-    flat = "".join(t for _, t in TERMINAL)
-    lines = flat.split("\n")
+    pad, title_h = 18 * scale, 38 * scale
+    lines = "".join(t for _, t in TERMINAL).split("\n")
     width = int(pad * 2 + cw * (max(len(l) for l in lines) + 2))
     height = title_h + pad * 2 + lh * len(lines)
+    radius = 11 * scale
 
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    radius = 11 * scale
     d.rounded_rectangle([0, 0, width - 1, height - 1], radius=radius, fill=UI["terminal.background"])
-    d.rounded_rectangle([0, 0, width - 1, title_h + radius], radius=radius, fill=C["chrome"])
-    d.rectangle([0, title_h - 1, width - 1, title_h], fill=C["border"])
-    r = 6 * scale
-    for i, col in enumerate(TRAFFIC):
-        cx = pad + i * (r * 2 + 8 * scale) + r
-        d.ellipse([cx - r, title_h // 2 - r, cx + r, title_h // 2 + r], fill=col)
-    fui = ImageFont.truetype(UISANS, int(12.5 * scale))
-    tw = d.textlength("zsh", font=fui)
-    d.text(((width - tw) / 2, (title_h - int(15 * scale)) / 2), "zsh", font=fui, fill=C["gutter"])
+    _chrome(d, width, "zsh", title_h, pad, radius, scale, C["chrome"])
 
     x, y = pad, title_h + pad
     for color, text in TERMINAL:
@@ -313,7 +267,166 @@ def terminal(out_path, size=19, scale=2):
     return out_path, (width // scale, height // scale)
 
 
+SAMPLES = [
+    ("python", "track.py", PythonLexer(), 18, """from __future__ import annotations
+
+import asyncio
+from dataclasses import dataclass, field
+from pathlib import Path
+
+
+@dataclass(slots=True)
+class Track:
+    \"\"\"A single audio track, as read from disk.\"\"\"
+
+    title: str
+    seconds: float
+    tags: list[str] = field(default_factory=list)
+
+    @property
+    def duration(self) -> str:
+        minutes, rest = divmod(int(self.seconds), 60)
+        return f"{minutes}:{rest:02d}"
+
+
+async def scan(root: Path, *, limit: int = 100) -> list[Track]:
+    # newest first, so a partial scan still returns the useful half
+    found = sorted(root.rglob("*.flac"), key=lambda p: -p.stat().st_mtime)
+    tracks = [Track(title=p.stem, seconds=0.0) for p in found[:limit]]
+    await asyncio.sleep(0)
+    return tracks
+"""),
+
+    ("typescript", "tracks.ts", TypeScriptLexer(), 13, """import { readFile } from "node:fs/promises";
+
+export interface Track {
+  title: string;
+  seconds: number;
+  tags?: string[];
+}
+
+const FORMATS = new Set(["flac", "wav", "aiff"]);
+
+export async function loadTracks(path: string): Promise<Track[]> {
+  // one read, then everything else happens in memory
+  const raw = await readFile(path, "utf8");
+  const parsed = JSON.parse(raw) as Track[];
+
+  return parsed
+    .filter((track) => FORMATS.has(track.title.split(".").pop() ?? ""))
+    .map((track) => ({ ...track, tags: track.tags ?? [] }));
+}
+"""),
+
+    ("javascript", "tracks.js", JavascriptLexer(), 11, """import { readFile } from "node:fs/promises";
+
+const FORMATS = new Set(["flac", "wav", "aiff"]);
+
+export async function loadTracks(path) {
+  // one read, then everything else happens in memory
+  const raw = await readFile(path, "utf8");
+  const tracks = JSON.parse(raw);
+
+  return tracks
+    .filter((track) => FORMATS.has(track.format))
+    .map((track) => ({ ...track, tags: track.tags ?? [] }))
+    .sort((a, b) => b.seconds - a.seconds);
+}
+"""),
+
+    ("go", "track.go", GoLexer(), 17, """package track
+
+import (
+    "encoding/json"
+    "os"
+    "sort"
+)
+
+// Track is a single audio file on disk.
+type Track struct {
+    Title   string   `json:"title"`
+    Seconds float64  `json:"seconds"`
+    Tags    []string `json:"tags,omitempty"`
+}
+
+func Load(path string) ([]Track, error) {
+    raw, err := os.ReadFile(path)
+    if err != nil {
+        return nil, err
+    }
+
+    var tracks []Track
+    if err := json.Unmarshal(raw, &tracks); err != nil {
+        return nil, err
+    }
+
+    sort.Slice(tracks, func(i, j int) bool {
+        return tracks[i].Seconds > tracks[j].Seconds
+    })
+    return tracks, nil
+}
+"""),
+
+    ("rust", "track.rs", RustLexer(), 16, """use std::path::Path;
+
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Track {
+    pub title: String,
+    pub seconds: f64,
+    #[serde(default)]
+    pub tags: Vec<String>,
+}
+
+impl Track {
+    /// Human-readable duration, as `m:ss`.
+    pub fn duration(&self) -> String {
+        let minutes = (self.seconds / 60.0).floor() as u32;
+        format!("{}:{:02}", minutes, self.seconds as u32 % 60)
+    }
+}
+
+pub fn load(path: &Path) -> anyhow::Result<Vec<Track>> {
+    let raw = std::fs::read_to_string(path)?;
+    let tracks: Vec<Track> = serde_json::from_str(&raw)?;
+    Ok(tracks)
+}
+"""),
+
+    ("cpp", "track.cpp", CppLexer(), 19, """#include <algorithm>
+#include <string>
+#include <vector>
+
+namespace audio {
+
+struct Track {
+    std::string title;
+    double seconds = 0.0;
+    std::vector<std::string> tags;
+
+    [[nodiscard]] int minutes() const noexcept {
+        return static_cast<int>(seconds) / 60;
+    }
+};
+
+std::vector<Track> longest(std::vector<Track> tracks, std::size_t limit) {
+    // longest first, then keep only what the caller asked for
+    std::sort(tracks.begin(), tracks.end(), [](const Track& a, const Track& b) {
+        return a.seconds > b.seconds;
+    });
+    tracks.resize(std::min(limit, tracks.size()));
+    return tracks;
+}
+
+}  // namespace audio
+"""),
+]
+
+
 if __name__ == "__main__":
-    os.makedirs(ROOT / "images", exist_ok=True)
-    print(*window(SAMPLE, "models.py", ROOT / "images" / "preview.png", highlight=16))
+    (ROOT / "images").mkdir(exist_ok=True)
+    for name, filename, lexer, hl, code in SAMPLES:
+        out = ROOT / "images" / f"preview-{name}.png"
+        print(*window(code, filename, lexer, out, highlight=hl))
     print(*terminal(ROOT / "images" / "terminal.png"))
