@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.6]
+
+- HTML gets real, distinct coverage instead of riding on whatever generic
+  scopes happened to apply: entities (`&amp;`, `&nbsp;`, ...) are now coral
+  (`constant.character.entity`), and `<!DOCTYPE html>` is muted italic
+  (`meta.tag.sgml.doctype`/`meta.tag.metadata.doctype`) so it reads as the
+  boilerplate aside it is instead of competing with real markup.
+- `render_preview.py` gains an HTML sample and preview, added to the README
+  alongside the other languages. Its refinement pass now also gives tag
+  punctuation (`<`, `>`, `/`) the same muted shade the theme itself uses for
+  it, and attribute names render italic to match `entity.other.attribute-name`.
+  The sample embeds a `<style>` and `<script>` block so the preview shows
+  real CSS/JS tokenization (selectors, properties, hex colors, template
+  literals) instead of reading as one flat wall of markup.
+
 ## [1.0.5]
 
 - Go (and other statically-typed languages) read flatter than Python because

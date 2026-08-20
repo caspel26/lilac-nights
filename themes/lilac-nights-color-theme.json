@@ -479,6 +479,16 @@
       "settings": { "foreground": "#716490" }
     },
     {
+      "name": "HTML entities",
+      "scope": ["constant.character.entity"],
+      "settings": { "foreground": "#ff9d7a" }
+    },
+    {
+      "name": "HTML doctype",
+      "scope": ["meta.tag.sgml.doctype", "meta.tag.metadata.doctype"],
+      "settings": { "foreground": "#716490", "fontStyle": "italic" }
+    },
+    {
       "name": "Decorators",
       "scope": [
         "meta.decorator",

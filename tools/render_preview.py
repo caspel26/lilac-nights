@@ -18,8 +18,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 from pygments import lex
-from pygments.lexers import (CppLexer, GoLexer, JavascriptLexer, PythonLexer,
-                             RustLexer, TypeScriptLexer)
+from pygments.lexers import (CppLexer, GoLexer, HtmlLexer, JavascriptLexer,
+                             PythonLexer, RustLexer, TypeScriptLexer)
 from pygments.token import Token
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -48,6 +48,7 @@ C = {
     "operator": SEM["operator"]["foreground"],
     "comment": SEM["comment"]["foreground"],
     "punct": next(r["settings"]["foreground"] for r in THEME["tokenColors"] if r["name"] == "Punctuation"),
+    "tagpunct": next(r["settings"]["foreground"] for r in THEME["tokenColors"] if r["name"] == "Tag punctuation"),
     "error": UI["editorError.foreground"],
 }
 
@@ -66,11 +67,12 @@ STYLES = {
     Token.Keyword.Constant: ("number", "italic"),
     Token.Keyword.Type: ("builtin_type", "italic"),
     Token.Name: ("fg", "regular"),
-    Token.Name.Attribute: ("attr", "regular"),
+    Token.Name.Attribute: ("attr", "italic"),
     Token.Name.Builtin: ("cls", "italic"),
     Token.Name.Builtin.Pseudo: ("self", "italic"),
     Token.Name.Class: ("cls", "bold"),
     Token.Name.Decorator: ("decorator", "regular"),
+    Token.Name.Entity: ("number", "regular"),
     Token.Name.Exception: ("cls", "regular"),
     Token.Name.Function: ("func", "regular"),
     Token.Name.Function.Magic: ("func", "italic"),
@@ -78,7 +80,7 @@ STYLES = {
     Token.Name.Namespace: ("cls", "italic"),
     Token.Name.Other: ("fg", "regular"),
     Token.Name.Parameter: ("param", "regular"),
-    Token.Name.Tag: ("attr", "regular"),
+    Token.Name.Tag: ("keyword", "regular"),
     Token.Name.Variable: ("fg", "regular"),
     Token.Literal: ("string", "regular"),
     Token.Literal.Number: ("number", "regular"),
@@ -116,6 +118,7 @@ def style_for(ttype):
 def tokenize(code, lexer):
     """Pygments tokens, split to one entry per line, with local refinements."""
     raw = [(t, v) for t, v in lex(code, lexer) if v]
+    is_html = isinstance(lexer, HtmlLexer)
 
     # Refinement pass: Pygments emits a bare Token.Name for most identifiers.
     # Decide what each one actually is from its neighbours, the same way the
@@ -191,6 +194,11 @@ def tokenize(code, lexer):
             bol = True
 
         color, fstyle = style_for(ttype)
+        if is_html:
+            if value.startswith("<!DOCTYPE"):
+                color, fstyle = C["tagpunct"], "italic"
+            elif ttype is Token.Punctuation and value in ("<", ">", "/"):
+                color, fstyle = C["tagpunct"], "regular"
         for j, part in enumerate(value.split("\n")):
             out.append((part, color, fstyle, j > 0))
     return out
@@ -575,6 +583,30 @@ std::vector<Track> longest(std::vector<Track> tracks, std::size_t limit) {
 }
 
 }  // namespace audio
+"""),
+
+    ("html", "tracks.html", HtmlLexer(), 19, """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track list</title>
+  <style>
+    .track { color: #b98cff; font-size: 14px; }
+  </style>
+</head>
+<body class="dark" data-theme="lilac">
+  <!-- render one row per track -->
+  <ul id="tracks">
+    <li class="track">
+      <a href="/tracks/1">Sample &amp; Test</a>
+    </li>
+  </ul>
+  <script>
+    const total = 42;
+    console.log(`loaded ${total} tracks`);
+  </script>
+</body>
+</html>
 """),
 ]
 

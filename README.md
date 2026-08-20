@@ -98,6 +98,13 @@ C++. Python is the sample up top; click a language below to see the rest.
 </p>
 </details>
 
+<details>
+<summary><img src="https://img.shields.io/badge/HTML-211a2e?style=for-the-badge&logo=html5&logoColor=b98cff&labelColor=211a2e&color=211a2e" alt="HTML"></summary>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-html.png" width="620" alt="Lilac Nights in HTML">
+</p>
+</details>
+
 ## What it covers
 
 Beyond the usual: **semantic tokens** (including `variable.classMember`, so
