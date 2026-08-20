@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.5]
+
+- Go (and other statically-typed languages) read flatter than Python because
+  every built-in primitive type (`string`, `int`, `bool`, `error`) shared the
+  same honey as user-defined structs and interfaces — Go's mandatory explicit
+  typing meant that one color did far more of the work than in Python.
+  `type.defaultLibrary`/`class.defaultLibrary` are now a desaturated tan
+  (`#c3a279`, italic), so built-in types read distinctly from your own types.
+- `render_preview.py` never recognized `func` (Go) or `fn` (Rust) as starting
+  a function signature — only `def`/`function` — so parameters (including Go
+  method receivers) rendered in the default foreground instead of parameter
+  pink. It also only colored a parameter at its declaration, not at any use
+  inside the function body, unlike real semantic highlighting. Both are fixed;
+  previews for every language are regenerated to match.
+
 ## [1.0.4]
 
 No color changes — this release fixes the tooling and docs that had drifted

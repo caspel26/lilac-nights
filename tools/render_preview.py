@@ -40,6 +40,7 @@ C = {
     "attr": SEM["property"]["foreground"],
     "func": SEM["function"]["foreground"],
     "cls": SEM["class"]["foreground"],
+    "builtin_type": SEM["type.defaultLibrary"]["foreground"],
     "string": SEM["string"]["foreground"],
     "number": SEM["number"]["foreground"],
     "param": SEM["parameter"]["foreground"],
@@ -63,7 +64,7 @@ STYLES = {
     Token.Comment.PreprocFile: ("string", "regular"),
     Token.Keyword: ("keyword", "bold"),
     Token.Keyword.Constant: ("number", "italic"),
-    Token.Keyword.Type: ("cls", "regular"),
+    Token.Keyword.Type: ("builtin_type", "italic"),
     Token.Name: ("fg", "regular"),
     Token.Name.Attribute: ("attr", "regular"),
     Token.Name.Builtin: ("cls", "italic"),
@@ -124,6 +125,8 @@ def tokenize(code, lexer):
     depth = 0        # paren depth
     was_def = False  # the last keyword seen was `def`/`function`
     sig_depth = None  # paren depth of the `def name(...)` signature we're in
+    func_groups_left = 0  # Go `func`: receiver + params are separate paren groups
+    current_params = set()  # names declared in the current signature, incl. use sites
     bol = True       # this token is the first thing on its line
     for i, (ttype, value) in enumerate(raw):
         nxt = ""
@@ -132,16 +135,26 @@ def tokenize(code, lexer):
                 nxt = v2.strip()
                 break
 
-        if value.strip() in ("def", "function"):
+        if value.strip() in ("def", "function", "fn"):
             was_def = True
+            current_params = set()
+        elif value.strip() == "func":
+            # a receiver `func (t Track) Name(...)` is two paren groups; a
+            # bare `func Name(...)` or closure `func(...)` is one
+            func_groups_left = 2 if nxt == "(" else 1
+            current_params = set()
 
         if value == "(":
             depth += 1
             if was_def and sig_depth is None:
                 sig_depth, was_def = depth, False
+            elif func_groups_left > 0 and sig_depth is None:
+                sig_depth = depth
         elif value == ")":
             if sig_depth == depth:
                 sig_depth = None
+                if func_groups_left > 0:
+                    func_groups_left -= 1
             depth -= 1
 
         if ttype in Token.Name and ttype not in Token.Name.Decorator:
@@ -158,7 +171,11 @@ def tokenize(code, lexer):
             # a parameter in a signature, or a keyword argument at a call site
             elif in_signature and prev in ("(", ",", "*", "**"):
                 ttype = Token.Name.Parameter
+                current_params.add(value)
             elif nxt == "=" and depth > 0:
+                ttype = Token.Name.Parameter
+            # a use of a parameter/receiver declared in this signature
+            elif plain and value in current_params:
                 ttype = Token.Name.Parameter
             # `Title string` / `Tags []string`: a declaration, not a type. The
             # theme paints declaration sites plain and use sites lilac.

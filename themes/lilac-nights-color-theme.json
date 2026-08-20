@@ -622,9 +622,9 @@
   "semanticTokenColors": {
     "namespace": { "foreground": "#ffcc80", "italic": true },
     "class": { "foreground": "#ffcc80" },
-    "class.defaultLibrary": { "foreground": "#ffcc80", "italic": true },
+    "class.defaultLibrary": { "foreground": "#c3a279", "italic": true },
     "type": { "foreground": "#ffcc80" },
-    "type.defaultLibrary": { "foreground": "#ffcc80", "italic": true },
+    "type.defaultLibrary": { "foreground": "#c3a279", "italic": true },
     "interface": { "foreground": "#ffcc80" },
     "enum": { "foreground": "#ffcc80" },
     "enumMember": { "foreground": "#5fe3d4" },
