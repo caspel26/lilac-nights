@@ -2,6 +2,11 @@
 .github/**
 .gitignore
 .vscodeignore
+CLAUDE.md
+HANDOFF.md
+DESIGN-*.md
+docs/**
+samples/**
 tools/**
 images/**
 **/__pycache__/**
