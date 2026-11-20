@@ -1,5 +1,46 @@
 # Changelog
 
+## [1.1.0]
+
+First release on the Visual Studio Marketplace, and the first with a light
+theme.
+
+- **Lilac Nights Light.** A second theme, generated from the dark one through
+  `tools/variants/light.json` (`node tools/build-variants.mjs`), so both keep
+  the same hue-per-job rules. Every syntax role is contrast-checked against the
+  light background in CI.
+- Java, C#, PHP, Vue and Markdown get their own scope rules instead of falling
+  into generic ones: Java type references, primitives and annotations; C#
+  built-in types and parameters; PHP types and attributes; Vue directives and
+  interpolation; Markdown list markers, fence language, strikethrough, indented
+  code and rules. Semantic rules for `delegate` and `annotationMember` cover
+  the token types the C# and Java language servers emit.
+- Readonly declarations no longer tie: `property.declaration.readonly`,
+  `variable.classMember.declaration.readonly` and their `.definition` twins are
+  explicit, the same class of fix as `variable.classMember.readonly` in 1.0.2.
+- Comments move from `#8a7dad` to `#8b7eae` (4.49 to 4.55) so every syntax role
+  clears WCAG AA, which the README had been claiming without it being true.
+- Workbench state fixes: `terminal.ansiBrightBlue`, inactive selection
+  backgrounds, input and dropdown borders, inactive activity bar icons, and tab
+  hover and unfocused colors.
+- New contrast gate (`.github/scripts/check-contrast.mjs`) in CI and in the
+  release: per-role contrast, rank order and neighbour separation, for both
+  themes.
+- The `.vsix` no longer ships `CLAUDE.md`, `HANDOFF.md` or the design docs.
+- The release workflow builds the tagged commit instead of the branch head,
+  and is split into package, attach, Open VSX and Marketplace jobs so neither
+  registry can strand the other. The Marketplace job publishes through OIDC
+  Trusted Publishing and is gated by the `PUBLISH_MARKETPLACE` repository
+  variable.
+- Previews: a full workbench mock, a language gallery, new Java, C#, PHP and
+  TSX previews, and light versions of all of them, all rendered from the theme
+  files. The `render_preview.py` terminal mock now derives its file list from
+  the manifest.
+- README restructured: workbench and gallery above the fold in place of the
+  collapsible badges, Marketplace badge and install option, a Light section,
+  and an honest contrast claim. Per-language previews moved to
+  `docs/previews.md` and "Making it yours" to `docs/customizing.md`.
+
 ## [1.0.6]
 
 - HTML gets real, distinct coverage instead of riding on whatever generic
