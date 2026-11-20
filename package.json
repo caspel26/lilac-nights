@@ -1,7 +1,7 @@
 {
   "name": "lilac-nights",
   "displayName": "Lilac Nights",
-  "description": "A dark theme with a lilac/violet spine and a full, contrast-checked syntax palette.",
+  "description": "A dark and light theme with a lilac/violet spine and a full, contrast-checked syntax palette.",
   "version": "1.0.6",
   "publisher": "caspel26",
   "license": "MIT",
@@ -15,6 +15,7 @@
   "keywords": [
     "theme",
     "dark",
+    "light",
     "purple",
     "lilac",
     "color-theme"
@@ -37,6 +38,11 @@
         "label": "Lilac Nights",
         "uiTheme": "vs-dark",
         "path": "./themes/lilac-nights-color-theme.json"
+      },
+      {
+        "label": "Lilac Nights Light",
+        "uiTheme": "vs",
+        "path": "./themes/lilac-nights-light-color-theme.json"
       }
     ]
   }
