@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.2]
+
+Lilac Nights Light gets a new white. The editor, sidebar, activity bar, panel,
+title bar, status bar, tabs, selections and hover rows move from near-neutral
+whites to lilac-tinted ones (editor `#fbf7ff`, sidebar and panel `#f7efff`,
+frame `#efe6ff`), so the light theme carries the same lilac as the dark one.
+Syntax colors are unchanged and every role still passes its contrast check.
+The dark theme is unchanged. The variant generator and the contrast gate now
+handle several variants and name the parent of each one.
+
 ## [1.1.1]
 
 No theme changes. The README brings back the expandable per-language previews
