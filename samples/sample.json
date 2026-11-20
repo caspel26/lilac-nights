@@ -1,0 +1,14 @@
+{
+  "name": "sample",
+  "version": "1.0.0",
+  "private": true,
+  "count": 42,
+  "ratio": 0.5,
+  "enabled": false,
+  "nothing": null,
+  "tags": ["lilac", "night"],
+  "nested": {
+    "key": "value",
+    "list": [1, 2, 3]
+  }
+}
