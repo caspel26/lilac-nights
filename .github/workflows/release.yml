@@ -1,28 +1,34 @@
 name: Release
 
 # Ships when you publish a GitHub release. Create it in the UI (or with
-# `gh release create v1.0.2 --generate-notes`) and this packages the extension,
-# pushes it to Open VSX, and attaches the .vsix to that same release.
+# `gh release create v1.0.7 --generate-notes`). The package job builds the tagged
+# commit once; the attach, ovsx and vsce jobs all publish that same .vsix, so a
+# failure at one registry cannot strand the others. Recovery is "Re-run failed
+# jobs" on the same run: it reuses the artifact, and --skip-duplicate makes a
+# registry that already succeeded a no-op.
 on:
   release:
     types: [published]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  release:
+  package:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.target_commitish }}
+          ref: ${{ github.event.release.tag_name }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Release tag must match the version in package.json
+        id: version
         run: |
           tag="${TAG#v}"
           pkg="$(node -p "require('./package.json').version")"
@@ -30,23 +36,83 @@ jobs:
             echo "release tag $TAG does not match package.json version $pkg" >&2
             exit 1
           fi
-          echo "VERSION=$pkg" >> "$GITHUB_ENV"
+          echo "version=$pkg" >> "$GITHUB_OUTPUT"
         env:
           TAG: ${{ github.event.release.tag_name }}
 
       - name: Validate colors
         run: node .github/scripts/check-colors.mjs
 
-      - name: Package
-        run: npx --yes @vscode/vsce package --out "lilac-nights-${VERSION}.vsix"
+      - name: Contrast, rank order and neighbour separation
+        run: node .github/scripts/check-contrast.mjs
 
-      - name: Publish to Open VSX
+      - name: Generated variants are up to date
+        if: ${{ hashFiles('tools/build-variants.mjs') != '' }}
+        run: node tools/build-variants.mjs --check
+
+      - name: Package
+        run: npx --yes @vscode/vsce@4.1.1 package --out "lilac-nights-${VERSION}.vsix"
         env:
-          OVSX_PAT: ${{ secrets.OVSX_PAT }}
-        run: npx --yes ovsx publish "lilac-nights-${VERSION}.vsix" -p "$OVSX_PAT"
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: vsix
+          path: lilac-nights-${{ steps.version.outputs.version }}.vsix
+          if-no-files-found: error
+
+  attach:
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: vsix
 
       - name: Attach the .vsix to the release
+        run: gh release upload "$TAG" "lilac-nights-${VERSION}.vsix" --clobber
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           TAG: ${{ github.event.release.tag_name }}
-        run: gh release upload "$TAG" "lilac-nights-${VERSION}.vsix" --clobber
+          VERSION: ${{ needs.package.outputs.version }}
+
+  ovsx:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: vsix
+
+      - name: Publish to Open VSX
+        run: npx --yes ovsx@1.4.0 publish --packagePath "lilac-nights-${VERSION}.vsix" -p "$OVSX_PAT" --skip-duplicate
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+          VERSION: ${{ needs.package.outputs.version }}
+
+  vsce:
+    needs: package
+    if: ${{ vars.PUBLISH_MARKETPLACE == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: vsix
+
+      - name: Publish to the Visual Studio Marketplace (Trusted Publishing)
+        run: npx --yes @vscode/vsce@4.1.1 publish --packagePath "lilac-nights-${VERSION}.vsix" --oidc --skip-duplicate
+        env:
+          VERSION: ${{ needs.package.outputs.version }}
