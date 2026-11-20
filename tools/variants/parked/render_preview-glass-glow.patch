@@ -1,0 +1,179 @@
+diff --git a/tools/render_preview.py b/tools/render_preview.py
+index c4e44c0..ea4ba82 100644
+--- a/tools/render_preview.py
++++ b/tools/render_preview.py
+@@ -19,7 +19,7 @@ import json
+ import subprocess
+ from pathlib import Path
+ 
+-from PIL import Image, ImageDraw, ImageFont
++from PIL import Image, ImageDraw, ImageFilter, ImageFont
+ from pygments import lex
+ from pygments.lexers import (CppLexer, CSharpLexer, GoLexer, HtmlLexer,
+                              JavaLexer, JavascriptLexer, PhpLexer,
+@@ -642,6 +642,8 @@ def _glyph(cv, kind, cx, cy, color):
+ 
+ def _activity(cv, UI):
+     cv.rect(0, 0, ACT_W, WB_H - STATUS_H, UI["activityBar.background"])
++    if has_floating_widget(UI):
++        cv.rect(0, 0, ACT_W, 48, UI["activityBar.activeBackground"])
+     for i, kind in enumerate(("files", "search", "branch", "run", "blocks")):
+         cy = 24 + i * 48
+         color = UI["activityBar.foreground"] if i == 0 else UI["activityBar.inactiveForeground"]
+@@ -679,6 +681,8 @@ def _sidebar(cv, UI):
+         fg, bg = _row_colors(UI, state)
+         if bg:
+             cv.rect(ACT_W, y, EDITOR_X, y + ROW_H, bg)
++        if state == "selected" and has_floating_widget(UI):
++            _frame(cv, UI, "list.focusAndSelectionOutline", ACT_W + 1, y + 1, EDITOR_X - 1, y + ROW_H - 1)
+         label = ("v " if name == "src" else "> ") + name if folder else name
+         cv.text(ACT_W + 16 + indent * 14 + (0 if folder else 14), y + 3, label, font, fg)
+         if state in mark:
+@@ -697,8 +701,12 @@ def _tabs(cv, UI):
+         x = EDITOR_X + n * TAB_W
+         active = state == "active"
+         fg = UI["tab.activeForeground"] if active else UI["tab.inactiveForeground"]
+-        cv.rect(x, 0, x + TAB_W, TAB_H, UI["tab.activeBackground"] if active else UI["tab.inactiveBackground"])
+-        cv.rect(x + TAB_W - 1, 0, x + TAB_W, TAB_H, UI["tab.border"])
++        hover = state == "inactive" and has_floating_widget(UI)
++        bg = "tab.activeBackground" if active else "tab.hoverBackground" if hover else "tab.inactiveBackground"
++        cv.rect(x, 0, x + TAB_W, TAB_H, UI[bg])
++        _edge(cv, UI, "tab.border", x + TAB_W - 1, 0, x + TAB_W, TAB_H)
++        if hover:
++            _edge(cv, UI, "tab.hoverBorder", x, TAB_H - 1, x + TAB_W - 1, TAB_H)
+         if active:
+             cv.rect(x, 0, x + TAB_W - 1, 2, UI["tab.activeBorderTop"])
+         cv.text(x + 14, 9, title, font, fg)
+@@ -737,7 +745,7 @@ def _editor(cv, C, code, lexer, highlight, size=13, lh=19):
+ 
+ def _panel(cv, UI):
+     cv.rect(EDITOR_X, PANEL_Y, WB_W, PANEL_Y + PANEL_H, UI["panel.background"])
+-    cv.rect(EDITOR_X, PANEL_Y, WB_W, PANEL_Y + 1, UI["panel.border"])
++    _edge(cv, UI, "panel.border", EDITOR_X, PANEL_Y, WB_W, PANEL_Y + 1)
+     font, x = cv.font(11, ARIAL_BOLD), EDITOR_X + 16
+     for title in ("PROBLEMS", "OUTPUT", "TERMINAL"):
+         active = title == "TERMINAL"
+@@ -781,6 +789,100 @@ def _status(cv, UI):
+         x -= 16
+ 
+ 
++def _rgba(value):
++    """'#rrggbb' or '#rrggbbaa' -> (rgb tuple, alpha 0-255)."""
++    h = value.lstrip("#")
++    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4)), int(h[6:8], 16) if len(h) == 8 else 255
++
++
++def has_floating_widget(UI):
++    """True for themes whose widget background is translucent (Glass, Glow):
++    only those get the suggest-widget overlay, so the opaque themes keep their
++    mock unchanged."""
++    return _rgba(UI["editorSuggestWidget.background"])[1] < 255
++
++
++# (label, kind) rows of the suggest widget; "d" is the typed prefix
++SUGGEST = [("duration", "property"), ("dataclass", "class"), ("default_factory", "field"),
++           ("dict", "class"), ("divmod", "function"), ("delattr", "function")]
++SUGGEST_ROW_H, SUGGEST_W = 22, 360
++
++
++def _blend(cv, box, color, alpha):
++    """Composite one flat color at `alpha` over the pixels in `box` (hi-res coords)."""
++    region = cv.img.crop(box)
++    cv.img.paste(Image.blend(region, Image.new("RGB", region.size, color), alpha / 255), box[:2])
++
++
++def _edge(cv, UI, key, x0, y0, x1, y1):
++    """Fill a 1x-coordinate box with theme key `key`. Opaque themes get the
++    plain rect (unchanged); floating themes composite the key's real alpha
++    over what is already drawn there, since cv.rect drops alpha."""
++    if not has_floating_widget(UI):
++        cv.rect(x0, y0, x1, y1, UI[key])
++        return
++    color, alpha = _rgba(UI[key])
++    _blend(cv, tuple(round(v * cv.s) for v in (x0, y0, x1, y1)), color, alpha)
++
++
++def _frame(cv, UI, key, x0, y0, x1, y1):
++    """1px translucent outline just inside the box."""
++    _edge(cv, UI, key, x0, y0, x1, y0 + 1)
++    _edge(cv, UI, key, x0, y1 - 1, x1, y1)
++    _edge(cv, UI, key, x0, y0 + 1, x0 + 1, y1 - 1)
++    _edge(cv, UI, key, x1 - 1, y0 + 1, x1, y1 - 1)
++
++
++def _pane_edges(cv, UI):
++    """Pane separators of the floating themes (the opaque themes' mock never
++    drew them): 1px at the right edge of the activity bar and sidebar, under
++    the section header, above the status bar. Alpha over the pane's surface."""
++    body = WB_H - STATUS_H
++    _edge(cv, UI, "activityBar.border", ACT_W - 1, 0, ACT_W, body)
++    _edge(cv, UI, "sideBar.border", EDITOR_X - 1, 0, EDITOR_X, body)
++    _edge(cv, UI, "sideBarSectionHeader.border", ACT_W, 33, EDITOR_X - 1, 34)
++    _edge(cv, UI, "statusBar.border", 0, body, WB_W, body + 1)
++
++
++def _suggest_widget(cv, C, UI, code, highlight, size=13, lh=19):
++    """Floating suggest widget under the cursor line, drawn over the finished
++    editor. Approximates VS Code's CSS (box-shadow 0 0 8px 2px, 1px border);
++    it is not a capture. Every color is a theme key."""
++    s = cv.s
++    cw = fonts(size * s)["regular"].getlength("M") / s
++    x0 = EDITOR_X + 14 + cw * 5 + cw * 12
++    y0 = TAB_H + CRUMB_H + 8 + highlight * lh
++    h = len(SUGGEST) * SUGGEST_ROW_H + 4
++    box = tuple(round(v * s) for v in (x0, y0, x0 + SUGGEST_W, y0 + h))
++    # halo: blurred rect, grown 2px, cut out under the (translucent) body
++    shadow, sa = _rgba(UI["widget.shadow"])
++    mask = Image.new("L", cv.img.size, 0)
++    grow = 2 * s
++    ImageDraw.Draw(mask).rectangle([box[0] - grow, box[1] - grow, box[2] + grow - 1, box[3] + grow - 1], fill=sa)
++    mask = mask.filter(ImageFilter.GaussianBlur(4 * s))
++    ImageDraw.Draw(mask).rectangle([box[0], box[1], box[2] - 1, box[3] - 1], fill=0)
++    cv.img.paste(Image.new("RGB", cv.img.size, shadow), (0, 0), mask)
++    # body over the code behind it, at the theme's real alpha
++    body, ba = _rgba(UI["editorSuggestWidget.background"])
++    _blend(cv, box, body, ba)
++    border, bra = _rgba(UI["editorSuggestWidget.border"])
++    for edge in ((box[0], box[1], box[2], box[1] + s), (box[0], box[3] - s, box[2], box[3]),
++                 (box[0], box[1] + s, box[0] + s, box[3] - s), (box[2] - s, box[1] + s, box[2], box[3] - s)):
++        _blend(cv, edge, border, bra)
++    mono, ui = fonts(size * s), cv.font(12)
++    for n, (label, kind) in enumerate(SUGGEST):
++        ry = y0 + 2 + n * SUGGEST_ROW_H
++        selected = n == 0
++        if selected:
++            cv.rect(x0 + 2, ry, x0 + SUGGEST_W - 2, ry + SUGGEST_ROW_H, UI["editorSuggestWidget.selectedBackground"])
++            cv.box(x0 + 2, ry, x0 + SUGGEST_W - 2, ry + SUGGEST_ROW_H - 1, UI["list.focusOutline"])
++        fg = UI["list.activeSelectionForeground"] if selected else C["fg"]
++        cv.rect(x0 + 10, ry + 7, x0 + 18, ry + 15, C["func"] if kind in ("function", "property") else C["cls"])
++        tx = cv.text(x0 + 28, ry + 3, label[0], mono["bold"], UI["editorSuggestWidget.highlightForeground"])
++        cv.text(tx, ry + 3, label[1:], mono["regular"], fg)
++        cv.text(x0 + SUGGEST_W - 12 - ui.getlength(kind) / s, ry + 4, kind, ui, C["gutter"])
++
++
+ def workbench(out_path, C, UI, code, lexer, highlight):
+     """A 1280x800 mock of the whole VS Code window, drawn from theme colors only.
+     A missing UI key raises KeyError: there are no fallback colors."""
+@@ -792,6 +894,9 @@ def workbench(out_path, C, UI, code, lexer, highlight):
+     _editor(cv, C, code, lexer, highlight)
+     _panel(cv, UI)
+     _status(cv, UI)
++    if has_floating_widget(UI):
++        _pane_edges(cv, UI)
++        _suggest_widget(cv, C, UI, code, highlight)
+     return cv.save(out_path)
+ 
+ 
+@@ -1113,6 +1218,12 @@ export function TrackList(props: Props) {
+ def render_theme(theme_path, suffix):
+     C, UI = load(theme_path)
+     img = ROOT / "images"
++    _, filename, lexer, hl, code = SAMPLES[0]
++    if has_floating_widget(UI):
++        # chrome-only variants share their parent's syntax: previews, terminal and
++        # palette would duplicate it (about 4.7 MB), so only the workbench differs
++        print(*workbench(img / f"workbench{suffix}.png", C, UI, code, lexer, hl))
++        return
+     for name, filename, lexer, hl, code in SAMPLES:
+         out = img / f"preview-{name}{suffix}.png"
+         print(*window(code, filename, lexer, out, C, highlight=hl))

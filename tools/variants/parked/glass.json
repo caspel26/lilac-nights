@@ -1,0 +1,246 @@
+{
+  "name": "Lilac Nights Glass",
+  "type": "dark",
+  "base": "dark",
+  "out": "themes/lilac-nights-glass-color-theme.json",
+  "map": {
+    "#15111f": "#0f0b18"
+  },
+  "alpha": {},
+  "overrides": {
+    "colors.activityBar.background": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.activityBar.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.activityBar.inactiveForeground": {
+      "value": "#8b7eae",
+      "why": "inactive label on the glass: #716490 would be 2.93:1 on #281e3b, the description violet is 4.25"
+    },
+    "colors.activityBarBadge.background": {
+      "value": "#d7b8ff",
+      "why": "badges join the one luminous accent (#d7b8ff, as cursor, active tab and focus); #0f0b18 text 11.27:1 on it"
+    },
+    "colors.badge.background": {
+      "value": "#d7b8ff",
+      "why": "badges join the one luminous accent (#d7b8ff, as cursor, active tab and focus); #0f0b18 text 11.27:1 on it"
+    },
+    "colors.debugToolBar.background": {
+      "value": "#271f3aeb",
+      "why": "lifted widget; alpha eb (.92) lets the code behind show faintly. Below e3 the ghost of the brightest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorGroup.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.editorGroupHeader.tabsBackground": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.editorHoverWidget.background": {
+      "value": "#271f3aeb",
+      "why": "lifted widget; alpha eb (.92) lets the code behind show faintly. Below e3 the ghost of the brightest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorHoverWidget.border": {
+      "value": "#d7b8ff47",
+      "why": "luminous widget edge (1.96:1 against the composited widget)"
+    },
+    "colors.editorSuggestWidget.background": {
+      "value": "#271f3aeb",
+      "why": "lifted widget; alpha eb (.92) lets the code behind show faintly. Below e3 the ghost of the brightest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorSuggestWidget.border": {
+      "value": "#d7b8ff47",
+      "why": "luminous widget edge (1.96:1 against the composited widget)"
+    },
+    "colors.editorSuggestWidget.selectedBackground": {
+      "value": "#382957",
+      "why": "selected row inside a lifted widget"
+    },
+    "colors.editorWidget.background": {
+      "value": "#271f3aeb",
+      "why": "lifted widget; alpha eb (.92) lets the code behind show faintly. Below e3 the ghost of the brightest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorWidget.border": {
+      "value": "#d7b8ff47",
+      "why": "luminous widget edge (1.96:1 against the composited widget)"
+    },
+    "colors.focusBorder": {
+      "value": "#d7b8ffa6",
+      "why": "focus ring a little brighter than dark (5.06:1 on the side bar)"
+    },
+    "colors.gitDecoration.ignoredResourceForeground": {
+      "value": "#716490",
+      "why": "stays the dimmest sidebar text: #5f5479 would be 2.26:1 on the glass, #716490 is 2.93 (dark 2.57)"
+    },
+    "colors.list.activeSelectionBackground": {
+      "value": "#3a2e4f",
+      "why": "accent at 10% over the glass, flattened: fg 10.82:1, match highlight 7.24, list.errorForeground 4.57 (12% would drop it to 4.36)"
+    },
+    "colors.list.focusBackground": {
+      "value": "#3a2e4f",
+      "why": "accent at 10% over the glass, flattened: fg 10.82:1, match highlight 7.24, list.errorForeground 4.57 (12% would drop it to 4.36)"
+    },
+    "colors.list.hoverBackground": {
+      "value": "#312645",
+      "why": "accent #d7b8ff at 5% over the glass, flattened: 1.12:1 against it, 1.13:1 below the selection (Dark 1.16)"
+    },
+    "colors.list.inactiveSelectionBackground": {
+      "value": "#3a2e4f",
+      "why": "same as the active selection, as in Dark, so an unfocused selection never looks like a hover"
+    },
+    "colors.notifications.background": {
+      "value": "#271f3aeb",
+      "why": "lifted widget; alpha eb (.92) lets the code behind show faintly. Below e3 the ghost of the brightest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.panel.background": {
+      "value": "#241b34",
+      "why": "lilac-lit panel (OKLCH .246 .048 298), between the editor and the glass; not lifted to the glass level because terminal.ansiBrightBlack #716490 would fall to 2.93:1 (here 3.07)"
+    },
+    "colors.panel.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.panelTitle.inactiveForeground": {
+      "value": "#8b7eae",
+      "why": "inactive panel title, same as the inactive tab and activity labels (4.44:1 on the panel)"
+    },
+    "colors.quickInput.background": {
+      "value": "#271f3aeb",
+      "why": "lifted widget; alpha eb (.92) lets the code behind show faintly. Below e3 the ghost of the brightest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.quickInputList.focusBackground": {
+      "value": "#382957",
+      "why": "selected row inside a lifted widget"
+    },
+    "colors.sideBar.background": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.sideBar.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.sideBarSectionHeader.background": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.statusBar.background": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.statusBar.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.statusBar.noFolderBackground": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.statusBarItem.hoverBackground": {
+      "value": "#3a2e4f",
+      "why": "same tint as the selected row: status text 6.77:1"
+    },
+    "colors.tab.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.tab.hoverBackground": {
+      "value": "#312645",
+      "why": "same as list.hoverBackground (the tab strip is the same glass)"
+    },
+    "colors.tab.inactiveBackground": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.tab.inactiveForeground": {
+      "value": "#8b7eae",
+      "why": "inactive label on the glass: #716490 would be 2.93:1 on #281e3b, the description violet is 4.25"
+    },
+    "colors.tab.unfocusedInactiveForeground": {
+      "value": "#8b7eae",
+      "why": "inactive label on the glass: #716490 would be 2.93:1 on #281e3b, the description violet is 4.25"
+    },
+    "colors.terminal.background": {
+      "value": "#241b34",
+      "why": "lilac-lit panel (OKLCH .246 .048 298), between the editor and the glass; not lifted to the glass level because terminal.ansiBrightBlack #716490 would fall to 2.93:1 (here 3.07)"
+    },
+    "colors.titleBar.activeBackground": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.titleBar.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.titleBar.inactiveBackground": {
+      "value": "#281e3b",
+      "why": "lifted lilac glass (OKLCH .262 .054 298), the same level as the composited floating widgets: 1.07:1 above the editor instead of sunk below it"
+    },
+    "colors.titleBar.inactiveForeground": {
+      "value": "#716490",
+      "why": "unfocused window title: #5f5479 would be 2.26:1 on the glass, #716490 is 2.93 (dark 2.68)"
+    },
+    "colors.widget.shadow": {
+      "value": "#b98cff1f",
+      "why": "restrained lilac halo; the gate caps it where comments fall to 3:1 and fg to 7:1"
+    }
+  },
+  "add": {
+    "colors.activityBar.activeBackground": {
+      "value": "#312645",
+      "why": "soft accent tint behind the active activity icon, as list.hoverBackground (icon 8.16:1 on it)"
+    },
+    "colors.editorHoverWidget.statusBarBackground": {
+      "value": "#382957",
+      "why": "default is lighten(hover bg, .2), which would come out translucent; pin it opaque"
+    },
+    "colors.list.focusAndSelectionOutline": {
+      "value": "#d7b8ff47",
+      "why": "faint luminous edge on the focused selected row, in the widget edge rhythm (1.87:1 on the row)"
+    },
+    "colors.list.focusOutline": {
+      "value": "#d7b8ff80",
+      "why": "ring on the focused list row; 00 alpha switches it off"
+    },
+    "colors.listFilterWidget.background": {
+      "value": "#271f3a",
+      "why": "covers a list, not code: opaque; default would inherit the translucent editorWidget.background"
+    },
+    "colors.menu.background": {
+      "value": "#271f3aeb",
+      "why": "custom menus follow the lifted widget; menu.background would default to dropdown.background"
+    },
+    "colors.menu.border": {
+      "value": "#d7b8ff47",
+      "why": "same luminous edge as the other floating widgets"
+    },
+    "colors.menu.foreground": {
+      "value": "#e6e0f5",
+      "why": "same text colour as editor.foreground, pinned so the gate can read it"
+    },
+    "colors.menu.selectionBackground": {
+      "value": "#382957",
+      "why": "same as the selected row in other widgets"
+    },
+    "colors.menu.separatorBackground": {
+      "value": "#d7b8ff2e",
+      "why": "hairline in the pane edge rhythm"
+    },
+    "colors.notificationToast.border": {
+      "value": "#d7b8ff47",
+      "why": "same luminous edge as the other floating widgets"
+    },
+    "colors.sideBarSectionHeader.border": {
+      "value": "#d7b8ff2e",
+      "why": "pane edge rhythm: accent at 18%, 1.51-1.53:1 on its own surface, 1.63:1 against the editor; replaces the dark hairlines"
+    },
+    "colors.tab.hoverBorder": {
+      "value": "#d7b8ff47",
+      "why": "soft accent underline on a hovered tab, in the widget edge rhythm"
+    }
+  }
+}

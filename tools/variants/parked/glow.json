@@ -1,0 +1,243 @@
+{
+  "name": "Lilac Nights Glow",
+  "type": "light",
+  "base": "light",
+  "out": "themes/lilac-nights-glow-color-theme.json",
+  "map": {
+    "#faf8fd": "#fbf7ff",
+    "#f4f2f8": "#f5f0fd",
+    "#e0dee8": "#e7e0f6",
+    "#e8e6f3": "#eee8fb",
+    "#dad6eb": "#e2d8f6",
+    "#cec7e5": "#d8caf6"
+  },
+  "alpha": {},
+  "overrides": {
+    "colors.activityBar.activeBorder": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.activityBar.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white glass (OKLCH .963 .023 308, the editor hue) for the side bar, activity bar and panel: 1.08:1 above the frame; terminal.ansiBrightBlack #9284b3 keeps 3.04:1 on it"
+    },
+    "colors.activityBar.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.activityBar.foreground": {
+      "value": "#8051bf",
+      "why": "active activity icon in the one accent violet (4.87:1 on the glass)"
+    },
+    "colors.editorCursor.foreground": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.editorGroup.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.editorGroupHeader.tabsBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar: 1.14:1 below the editor so the active tab still reads; inactive labels 3.49:1"
+    },
+    "colors.editorHoverWidget.background": {
+      "value": "#fdfbffeb",
+      "why": "lifted card, slightly see-through: alpha eb (.92) lets the code behind show faintly. Below d6 the ghost of the darkest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorHoverWidget.border": {
+      "value": "#8051bf47",
+      "why": "violet edge on the lifted card (1.48:1 against it)"
+    },
+    "colors.editorLineNumber.activeForeground": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.editorSuggestWidget.background": {
+      "value": "#fdfbffeb",
+      "why": "lifted card, slightly see-through: alpha eb (.92) lets the code behind show faintly. Below d6 the ghost of the darkest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorSuggestWidget.border": {
+      "value": "#8051bf47",
+      "why": "violet edge on the lifted card (1.48:1 against it)"
+    },
+    "colors.editorWidget.background": {
+      "value": "#fdfbffeb",
+      "why": "lifted card, slightly see-through: alpha eb (.92) lets the code behind show faintly. Below d6 the ghost of the darkest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.editorWidget.border": {
+      "value": "#8051bf47",
+      "why": "violet edge on the lifted card (1.48:1 against it)"
+    },
+    "colors.focusBorder": {
+      "value": "#8051bf99",
+      "why": "focus ring in the accent violet"
+    },
+    "colors.inputOption.activeBorder": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.list.activeSelectionBackground": {
+      "value": "#e9dcf7",
+      "why": "accent at 12% over the glass, flattened: fg 12.11:1, match highlight 5.42, list.errorForeground 4.19 (Light 3.86)"
+    },
+    "colors.list.focusBackground": {
+      "value": "#e9dcf7",
+      "why": "accent at 12% over the glass, flattened: fg 12.11:1, match highlight 5.42, list.errorForeground 4.19 (Light 3.86)"
+    },
+    "colors.list.hoverBackground": {
+      "value": "#f2e9fc",
+      "why": "accent #8051bf at 4% over the glass, flattened: 1.05:1 against it, 1.11:1 above the selection (Light 1.15)"
+    },
+    "colors.list.inactiveSelectionBackground": {
+      "value": "#e9dcf7",
+      "why": "same as the active selection, as in Light, so an unfocused selection never looks like a hover"
+    },
+    "colors.notifications.background": {
+      "value": "#fdfbffeb",
+      "why": "lifted card, slightly see-through: alpha eb (.92) lets the code behind show faintly. Below d6 the ghost of the darkest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.panel.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white glass (OKLCH .963 .023 308, the editor hue) for the side bar, activity bar and panel: 1.08:1 above the frame; terminal.ansiBrightBlack #9284b3 keeps 3.04:1 on it"
+    },
+    "colors.panel.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.panelTitle.activeBorder": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.progressBar.background": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.quickInput.background": {
+      "value": "#fdfbffeb",
+      "why": "lifted card, slightly see-through: alpha eb (.92) lets the code behind show faintly. Below d6 the ghost of the darkest glyph exceeds the 1.35:1 gate cap"
+    },
+    "colors.sideBar.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white glass (OKLCH .963 .023 308, the editor hue) for the side bar, activity bar and panel: 1.08:1 above the frame; terminal.ansiBrightBlack #9284b3 keeps 3.04:1 on it"
+    },
+    "colors.sideBar.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.sideBarSectionHeader.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white glass (OKLCH .963 .023 308, the editor hue) for the side bar, activity bar and panel: 1.08:1 above the frame; terminal.ansiBrightBlack #9284b3 keeps 3.04:1 on it"
+    },
+    "colors.statusBar.background": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar: 1.14:1 below the editor so the active tab still reads; inactive labels 3.49:1"
+    },
+    "colors.statusBar.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.statusBar.noFolderBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar: 1.14:1 below the editor so the active tab still reads; inactive labels 3.49:1"
+    },
+    "colors.statusBarItem.hoverBackground": {
+      "value": "#e2d4f7",
+      "why": "accent at 12% over the frame, flattened (status text 6.80:1)"
+    },
+    "colors.tab.activeBorderTop": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.tab.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.tab.hoverBackground": {
+      "value": "#ebe0fc",
+      "why": "accent at 4% over the frame, flattened (tab text 7.53:1)"
+    },
+    "colors.tab.inactiveBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar: 1.14:1 below the editor so the active tab still reads; inactive labels 3.49:1"
+    },
+    "colors.terminal.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white glass (OKLCH .963 .023 308, the editor hue) for the side bar, activity bar and panel: 1.08:1 above the frame; terminal.ansiBrightBlack #9284b3 keeps 3.04:1 on it"
+    },
+    "colors.terminalCursor.foreground": {
+      "value": "#8051bf",
+      "why": "accent: the keyword violet replaces Light's dim #684b8a; 5.16:1 on the editor, 4.26 on the chrome"
+    },
+    "colors.titleBar.activeBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar: 1.14:1 below the editor so the active tab still reads; inactive labels 3.49:1"
+    },
+    "colors.titleBar.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.titleBar.inactiveBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar: 1.14:1 below the editor so the active tab still reads; inactive labels 3.49:1"
+    },
+    "colors.widget.shadow": {
+      "value": "#8051bf29",
+      "why": "lilac halo round floating widgets instead of Light's grey shadow; comments stay above 3:1 under it"
+    }
+  },
+  "add": {
+    "colors.activityBar.activeBackground": {
+      "value": "#f2e9fc",
+      "why": "soft accent tint behind the active activity icon, as list.hoverBackground (icon 4.64:1 on it)"
+    },
+    "colors.editorHoverWidget.statusBarBackground": {
+      "value": "#f1ebfc",
+      "why": "default derives from the translucent hover bg; pin it opaque"
+    },
+    "colors.list.focusAndSelectionOutline": {
+      "value": "#8051bf47",
+      "why": "faint violet edge on the focused selected row, in the widget edge rhythm"
+    },
+    "colors.list.focusOutline": {
+      "value": "#8051bf80",
+      "why": "ring on the focused list row; 00 alpha switches it off"
+    },
+    "colors.listFilterWidget.background": {
+      "value": "#fdfbff",
+      "why": "covers a list, not code: opaque"
+    },
+    "colors.menu.background": {
+      "value": "#fdfbffeb",
+      "why": "custom menus follow the lifted widget"
+    },
+    "colors.menu.border": {
+      "value": "#8051bf47",
+      "why": "same violet edge as the other floating widgets"
+    },
+    "colors.menu.foreground": {
+      "value": "#2f2b3a",
+      "why": "same text colour as editor.foreground, pinned so the gate can read it"
+    },
+    "colors.menu.selectionBackground": {
+      "value": "#eee8fb",
+      "why": "same as the line highlight"
+    },
+    "colors.menu.separatorBackground": {
+      "value": "#8051bf3d",
+      "why": "hairline in the pane edge rhythm"
+    },
+    "colors.notificationToast.border": {
+      "value": "#8051bf47",
+      "why": "same violet edge as the other floating widgets"
+    },
+    "colors.sideBarSectionHeader.border": {
+      "value": "#8051bf3d",
+      "why": "pane edge rhythm: accent violet at 24%, 1.38:1 on the glass, 1.36 on the frame, 1.39 on the editor; lifts the lilac whites"
+    },
+    "colors.tab.hoverBorder": {
+      "value": "#8051bf47",
+      "why": "soft accent underline on a hovered tab, in the widget edge rhythm"
+    }
+  }
+}
