@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1]
+
+No theme changes. The README brings back the expandable per-language previews
+(now eleven, including TSX, Java, C# and PHP), each showing the dark and the
+light theme, and drops the preview gallery. It also gains a Visual Studio
+Marketplace installs badge and labels the Open VSX download count, so the
+Marketplace page ships with all of it from its first version. This is also the
+first release that publishes to the Marketplace from CI.
+
 ## [1.1.0]
 
 First release on the Visual Studio Marketplace, and the first with a light
