@@ -1,6 +1,8 @@
 // Gates what a theme must keep true beyond "every hex parses": per-role contrast
 // floors, the brightness rank order, hue-separated neighbours, same-hue pairs and
-// (for variants) hue drift against the dark theme. Roles are looked up by the
+// (for variants) hue drift against the declared parent, syntax identity for chrome-only
+// variants, legibility of floating widgets (including translucent ones) and the halo
+// cast by widget.shadow. Roles are looked up by the
 // tokenColors rule `name` or the semantic token key, so a renamed rule fails loudly.
 // Run with --table to print role, hex and contrast for each theme.
 import { readFileSync, readdirSync } from "node:fs";
@@ -14,6 +16,11 @@ const DE_MIN = 0.05; // OKLab distance for hue-separated neighbours
 const DL_MIN = 0.06; // OKLCH lightness gap for same-hue pairs
 const DRIFT_MAX = 5; // degrees
 const MIN_CHROMA = 0.04; // hue is unstable below this
+const GHOST_MAX = 1.35; // translucent widget: glyph behind vs clean surface, contrast ratio
+const HALO_FG_MIN = 7.0; // fg and comments under a full-alpha widget.shadow
+const HALO_COMMENTS_MIN = 3.0;
+const VARIANT_DIR = "tools/variants";
+const DARK_FILE = "lilac-nights-color-theme.json"; // what base "dark" means in a variant config
 
 // role -> [kind, key]. kind: "tm" = tokenColors name, "sem" = semantic key, "ui" = colors key.
 const ROLES = {
@@ -143,6 +150,57 @@ const checkPairs = (roles, file, fail) => {
   }
 };
 
+// [surface key, [text key, floor over the editor bg, floor over the worst glyph]...]
+const OVERLAYS = [
+  ["editorSuggestWidget.background", [["editor.foreground", 7, 4.5], ["editorSuggestWidget.highlightForeground", 4.5, 3], ["descriptionForeground", 3, 3]]],
+  ["editorHoverWidget.background", [["editor.foreground", 7, 4.5], ["list.highlightForeground", 4.5, 3], ["descriptionForeground", 3, 3]]],
+  ["editorWidget.background", [["editor.foreground", 7, 4.5], ["list.highlightForeground", 4.5, 3], ["descriptionForeground", 3, 3]]],
+  ["quickInput.background", [["editor.foreground", 7, 4.5], ["list.highlightForeground", 4.5, 3], ["descriptionForeground", 3, 3]]],
+  ["notifications.background", [["editor.foreground", 7, 4.5], ["descriptionForeground", 3, 3]]],
+  ["menu.background", [["menu.foreground", 7, 4.5], ["descriptionForeground", 3, 3]]],
+];
+
+const checkOverlays = (theme, roles, file, fail) => {
+  const c = theme.colors;
+  const bg = composite(c["editor.background"], [0, 0, 0]);
+  const worst = Object.values(roles).reduce((a, r) => (r.cr > a.cr ? r : a));
+  for (const [surfaceKey, texts] of OVERLAYS) {
+    if (!c[surfaceKey]) continue;
+    const surfaces = [["editor bg", composite(c[surfaceKey], bg), 1]];
+    if (parse(c[surfaceKey]).a < 1) {
+      const over = composite(c[surfaceKey], worst.rgb);
+      const ghost = contrast(over, surfaces[0][1]);
+      if (ghost > GHOST_MAX) fail(`${file}: ${surfaceKey} ghost of ${worst.hex} is ${ghost.toFixed(2)}:1 > ${GHOST_MAX} (alpha too low)`);
+      surfaces.push([`worst glyph ${worst.hex}`, over, 2]);
+    }
+    for (const [textKey, ...floors] of texts) {
+      if (!c[textKey]) continue;
+      for (const [label, surf, idx] of surfaces) {
+        const cr = contrast(composite(c[textKey], surf), surf);
+        if (cr < floors[idx - 1]) fail(`${file}: ${textKey} on ${surfaceKey} over ${label} is ${cr.toFixed(2)}:1 < ${floors[idx - 1]}`);
+      }
+    }
+  }
+};
+
+const checkHalo = (theme, file, fail) => {
+  const bg = composite(theme.colors["editor.background"], [0, 0, 0]);
+  const shadow = theme.colors["widget.shadow"];
+  if (!shadow) return;
+  const under = composite(shadow, bg);
+  for (const [role, min] of [["comments", HALO_COMMENTS_MIN], ["fg", HALO_FG_MIN]]) {
+    const hex = resolve(theme, ROLES[role]);
+    const cr = contrast(composite(hex, under), under);
+    if (cr < min) fail(`${file}: ${role} ${hex} is ${cr.toFixed(2)}:1 under widget.shadow ${shadow} (min ${min})`);
+  }
+};
+
+const checkSyntaxIdentity = (theme, parent, file, parentFile, fail) => {
+  for (const key of ["tokenColors", "semanticTokenColors"]) {
+    if (JSON.stringify(theme[key]) !== JSON.stringify(parent[key])) fail(`${file}: ${key} differ from parent ${parentFile} (a chrome-only variant must share its syntax)`);
+  }
+};
+
 const checkDrift = (roles, dark, file, fail) => {
   for (const [role, r] of Object.entries(roles)) {
     const d = dark[role];
@@ -160,19 +218,40 @@ const fail = (msg) => {
 
 const files = readdirSync("themes").filter((f) => f.endsWith(".json")).sort();
 const themes = files.map((file) => ({ file, theme: JSON.parse(readFileSync(`themes/${file}`, "utf8")) }));
-const darkEntry = themes.find((t) => t.theme.type === "dark");
-const darkRoles = darkEntry && resolveRoles(darkEntry.theme, darkEntry.file, fail);
+const byFile = new Map(themes.map((t) => [t.file, t]));
+
+// out file -> parent file, from the variant configs. base "dark" is the source theme,
+// any other base is another variant's slug. A theme with no config is a root.
+const cfgs = readdirSync(VARIANT_DIR).filter((n) => n.endsWith(".json")).map((f) => ({ slug: f.slice(0, -5), ...JSON.parse(readFileSync(`${VARIANT_DIR}/${f}`, "utf8")) }));
+const outFile = (c) => c.out.split("/").pop();
+const parents = new Map(cfgs.map((c) => [outFile(c), c.base === "dark" ? DARK_FILE : outFile(cfgs.find((o) => o.slug === c.base) ?? { out: c.base })]));
+
+const roleCache = new Map();
+const rolesOf = (file) => {
+  if (!roleCache.has(file)) roleCache.set(file, resolveRoles(byFile.get(file).theme, file, fail));
+  return roleCache.get(file);
+};
 
 for (const { file, theme } of themes) {
-  const roles = file === darkEntry?.file ? darkRoles : resolveRoles(theme, file, fail);
+  const roles = rolesOf(file);
   if (TABLE) {
     console.log(`\n${file}\nrole\thex\tcontrast`);
     for (const [role, r] of Object.entries(roles)) console.log(`${role}\t${r.hex}\t${r.cr.toFixed(2)}`);
   }
+  if (parse(theme.colors["editor.background"]).a < 1) fail(`${file}: editor.background must be opaque`);
   checkFloors(roles, file, fail);
   checkRank(roles, file, fail);
   checkPairs(roles, file, fail);
-  if (darkRoles && file !== darkEntry.file) checkDrift(roles, darkRoles, file, fail);
+  checkOverlays(theme, roles, file, fail);
+  checkHalo(theme, file, fail);
+  const parentFile = parents.get(file);
+  if (parentFile) {
+    if (!byFile.has(parentFile)) fail(`${file}: parent ${parentFile} not found`);
+    else {
+      checkDrift(roles, rolesOf(parentFile), file, fail);
+      if (theme.type === byFile.get(parentFile).theme.type) checkSyntaxIdentity(theme, byFile.get(parentFile).theme, file, parentFile, fail);
+    }
+  }
   console.log(`checked ${file}`);
 }
 

@@ -1,13 +1,17 @@
 {
+  "name": "Lilac Nights Light",
+  "type": "light",
+  "base": "dark",
+  "out": "themes/lilac-nights-light-color-theme.json",
   "map": {
     "#000000": "#000000",
-    "#15111f": "#e0dee8",
-    "#1a1526": "#f4f2f8",
-    "#211a2e": "#faf8fd",
-    "#2b2340": "#e8e6f3",
-    "#372c52": "#dad6eb",
+    "#15111f": "#e7e0f6",
+    "#1a1526": "#f5f0fd",
+    "#211a2e": "#fbf7ff",
+    "#2b2340": "#eee8fb",
+    "#372c52": "#e2d8f6",
     "#3d1f2b": "#f9e0e9",
-    "#453863": "#cec7e5",
+    "#453863": "#d8caf6",
     "#5f5479": "#a296bf",
     "#5fe3d4": "#00635a",
     "#716490": "#9284b3",
@@ -140,6 +144,74 @@
     "colors.minimapSlider.activeBackground": {
       "value": "#776a9977",
       "why": "same as scrollbarSlider.background"
+    },
+    "colors.activityBar.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white (OKLCH .963 .023 308, the editor hue) for side bar, activity bar, panel and terminal; 1.08:1 above the frame"
+    },
+    "colors.sideBar.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white (OKLCH .963 .023 308, the editor hue) for side bar, activity bar, panel and terminal; 1.08:1 above the frame"
+    },
+    "colors.panel.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white (OKLCH .963 .023 308, the editor hue) for side bar, activity bar, panel and terminal; 1.08:1 above the frame"
+    },
+    "colors.terminal.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white (OKLCH .963 .023 308, the editor hue) for side bar, activity bar, panel and terminal; 1.08:1 above the frame"
+    },
+    "colors.sideBarSectionHeader.background": {
+      "value": "#f7efff",
+      "why": "lilac-tinted white (OKLCH .963 .023 308, the editor hue) for side bar, activity bar, panel and terminal; 1.08:1 above the frame"
+    },
+    "colors.editorGroupHeader.tabsBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar; 1.14:1 below the editor so the active tab still reads"
+    },
+    "colors.statusBar.background": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar; 1.14:1 below the editor so the active tab still reads"
+    },
+    "colors.statusBar.noFolderBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar; 1.14:1 below the editor so the active tab still reads"
+    },
+    "colors.tab.inactiveBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar; 1.14:1 below the editor so the active tab still reads"
+    },
+    "colors.titleBar.activeBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar; 1.14:1 below the editor so the active tab still reads"
+    },
+    "colors.titleBar.inactiveBackground": {
+      "value": "#efe6ff",
+      "why": "lilac-lit frame (OKLCH .940 .036 301) for title bar, tab strip and status bar; 1.14:1 below the editor so the active tab still reads"
+    },
+    "colors.list.activeSelectionBackground": {
+      "value": "#e9dcf7",
+      "why": "accent #8051bf at 12% over the side bar surface, flattened"
+    },
+    "colors.list.focusBackground": {
+      "value": "#e9dcf7",
+      "why": "accent #8051bf at 12% over the side bar surface, flattened"
+    },
+    "colors.list.inactiveSelectionBackground": {
+      "value": "#e9dcf7",
+      "why": "accent #8051bf at 12% over the side bar surface, flattened"
+    },
+    "colors.list.hoverBackground": {
+      "value": "#f2e9fc",
+      "why": "accent #8051bf at 4% over the side bar surface, flattened"
+    },
+    "colors.statusBarItem.hoverBackground": {
+      "value": "#e2d4f7",
+      "why": "accent at 12% over the frame, flattened"
+    },
+    "colors.tab.hoverBackground": {
+      "value": "#ebe0fc",
+      "why": "accent at 4% over the frame, flattened"
     }
   }
 }
