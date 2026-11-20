@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Render every README image for every theme in package.json: the language
-previews, the gallery grid, the workbench mock, the terminal mock and the
+previews, the workbench mock, the terminal mock and the
 palette swatch sheet. The base (dark) theme keeps the plain file names; other
 themes get a `-<slug>` suffix.
 
@@ -16,7 +16,6 @@ its own.
 """
 
 import json
-import math
 import subprocess
 from pathlib import Path
 
@@ -796,25 +795,6 @@ def workbench(out_path, C, UI, code, lexer, highlight):
     return cv.save(out_path)
 
 
-def gallery(paths, C, out_path, cols=3, gap=24, pad=32):
-    """Grid of the language previews at half scale, on the editor background."""
-    imgs = [Image.open(p) for p in paths]
-    imgs = [im.resize((im.width // 2, im.height // 2), Image.LANCZOS) for im in imgs]
-    rows = math.ceil(len(imgs) / cols)
-    col_w = [max(im.width for im in imgs[c::cols]) for c in range(cols)]
-    row_h = [max(im.height for im in imgs[r * cols:(r + 1) * cols]) for r in range(rows)]
-    width = pad * 2 + sum(col_w) + gap * (cols - 1)
-    height = pad * 2 + sum(row_h) + gap * (rows - 1)
-    sheet = Image.new("RGBA", (width, height), C["bg"])
-    for n, im in enumerate(imgs):
-        r, c = divmod(n, cols)
-        x = pad + sum(col_w[:c]) + gap * c
-        y = pad + sum(row_h[:r]) + gap * r
-        sheet.paste(im, (x, y), im)
-    sheet.save(out_path)
-    return out_path, (width, height)
-
-
 def pair(left_path, right_path, out_path, bg, gap=16):
     """Dark workbench on the left, light on the right, same height, thin gap."""
     left, right = Image.open(left_path), Image.open(right_path)
@@ -1133,17 +1113,14 @@ export function TrackList(props: Props) {
 def render_theme(theme_path, suffix):
     C, UI = load(theme_path)
     img = ROOT / "images"
-    previews = []
     for name, filename, lexer, hl, code in SAMPLES:
         out = img / f"preview-{name}{suffix}.png"
-        previews.append(out)
         print(*window(code, filename, lexer, out, C, highlight=hl))
     files = packaged_files()
     print(*terminal(img / f"terminal{suffix}.png", C, UI, files))
     print(*palette(img / f"palette{suffix}.png", C, UI))
     _, filename, lexer, hl, code = SAMPLES[0]
     print(*workbench(img / f"workbench{suffix}.png", C, UI, code, lexer, hl))
-    print(*gallery(previews, C, img / f"gallery{suffix}.png"))
 
 
 if __name__ == "__main__":

@@ -11,7 +11,8 @@
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=caspel26.lilac-nights"><img src="https://img.shields.io/visual-studio-marketplace/v/caspel26.lilac-nights?color=b98cff&labelColor=211a2e&style=flat-square&label=vs%20marketplace" alt="VS Marketplace"></a>
   <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/v/caspel26/lilac-nights?color=b98cff&labelColor=211a2e&style=flat-square&label=open%20vsx" alt="Open VSX"></a>
-  <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/dt/caspel26/lilac-nights?color=d7b8ff&labelColor=211a2e&style=flat-square&label=downloads" alt="Downloads"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=caspel26.lilac-nights"><img src="https://img.shields.io/visual-studio-marketplace/i/caspel26.lilac-nights?color=d7b8ff&labelColor=211a2e&style=flat-square&label=installs" alt="VS Marketplace installs"></a>
+  <a href="https://open-vsx.org/extension/caspel26/lilac-nights"><img src="https://img.shields.io/open-vsx/dt/caspel26/lilac-nights?color=d7b8ff&labelColor=211a2e&style=flat-square&label=open%20vsx%20downloads" alt="Open VSX downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-d7b8ff?labelColor=211a2e&style=flat-square" alt="MIT"></a>
   <img src="https://img.shields.io/badge/VS%20Code-%5E1.70-8ec5ff?labelColor=211a2e&style=flat-square" alt="VS Code ^1.70">
 </p>
@@ -31,12 +32,175 @@ calls, sage strings, and orchid for whatever the language treats as a
 directive — decorators in Python, attributes in Rust, annotations in Java,
 preprocessor lines in C++.
 
+## Previews
+
+Click a language to expand it: each one shows **Lilac Nights** and **Lilac Nights Light**.
+Every image is rendered from the theme files, so it always matches the colors in `themes/`.
+
+<details>
+<summary><b>Python</b></summary>
+
+<p align="center"><b>Dark</b></p>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/gallery.png" width="860" alt="Gallery of Lilac Nights previews across languages (rendered from the theme file)">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-python.png" width="720" alt="Lilac Nights in Python (rendered from the theme file)">
 </p>
 
-Full-size previews for every language:
-[docs/previews.md](https://github.com/caspel26/lilac-nights/blob/main/docs/previews.md).
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-python-light.png" width="720" alt="Lilac Nights Light in Python (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>TypeScript</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-typescript.png" width="720" alt="Lilac Nights in TypeScript (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-typescript-light.png" width="720" alt="Lilac Nights Light in TypeScript (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>TSX</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-tsx.png" width="720" alt="Lilac Nights in TSX (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-tsx-light.png" width="720" alt="Lilac Nights Light in TSX (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-javascript.png" width="720" alt="Lilac Nights in JavaScript (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-javascript-light.png" width="720" alt="Lilac Nights Light in JavaScript (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>Go</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-go.png" width="620" alt="Lilac Nights in Go (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-go-light.png" width="620" alt="Lilac Nights Light in Go (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>Rust</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-rust.png" width="680" alt="Lilac Nights in Rust (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-rust-light.png" width="680" alt="Lilac Nights Light in Rust (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>C++</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-cpp.png" width="760" alt="Lilac Nights in C++ (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-cpp-light.png" width="760" alt="Lilac Nights Light in C++ (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>Java</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-java.png" width="720" alt="Lilac Nights in Java (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-java-light.png" width="720" alt="Lilac Nights Light in Java (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>C#</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-csharp.png" width="720" alt="Lilac Nights in C# (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-csharp-light.png" width="720" alt="Lilac Nights Light in C# (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>PHP</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-php.png" width="720" alt="Lilac Nights in PHP (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-php-light.png" width="720" alt="Lilac Nights Light in PHP (rendered from the theme file)">
+</p>
+
+</details>
+
+<details>
+<summary><b>HTML</b></summary>
+
+<p align="center"><b>Dark</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-html.png" width="620" alt="Lilac Nights in HTML (rendered from the theme file)">
+</p>
+
+<p align="center"><b>Light</b></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/caspel26/lilac-nights/main/images/preview-html-light.png" width="620" alt="Lilac Nights Light in HTML (rendered from the theme file)">
+</p>
+
+</details>
 
 ## Palette
 
