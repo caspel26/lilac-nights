@@ -1,0 +1,145 @@
+{
+  "map": {
+    "#000000": "#000000",
+    "#15111f": "#e0dee8",
+    "#1a1526": "#f4f2f8",
+    "#211a2e": "#faf8fd",
+    "#2b2340": "#e8e6f3",
+    "#372c52": "#dad6eb",
+    "#3d1f2b": "#f9e0e9",
+    "#453863": "#cec7e5",
+    "#5f5479": "#a296bf",
+    "#5fe3d4": "#00635a",
+    "#716490": "#9284b3",
+    "#8aeee2": "#005d56",
+    "#8b7eae": "#776a99",
+    "#8ec5ff": "#2b5f93",
+    "#b3d8ff": "#38587a",
+    "#8fdc98": "#156729",
+    "#b8f0be": "#275b31",
+    "#b98cff": "#8051bf",
+    "#c3a279": "#81623b",
+    "#c3bade": "#49415f",
+    "#c9a3ff": "#744fa3",
+    "#d7b8ff": "#684b8a",
+    "#e6e0f5": "#2f2b3a",
+    "#ecd9ff": "#5b4b6a",
+    "#f17ec1": "#a93d80",
+    "#f18ce8": "#94358e",
+    "#f2ecff": "#25202e",
+    "#ff6b85": "#c13153",
+    "#ff8fa3": "#a53f56",
+    "#ff9d7a": "#9e4624",
+    "#ffcc80": "#724d00",
+    "#ffdba3": "#6a4c12"
+  },
+  "alpha": {
+    "#45386380": "cc",
+    "#8fdc981f": "33",
+    "#ff6b851f": "33",
+    "#8fdc9815": "1f",
+    "#ff6b8515": "1f"
+  },
+  "overrides": {
+    "colors.button.foreground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.badge.foreground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.activityBarBadge.foreground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.statusBar.debuggingForeground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.statusBarItem.errorForeground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.statusBarItem.remoteForeground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.statusBarItem.warningForeground": {
+      "value": "#ffffff",
+      "why": "text on a saturated fill: the surface mapping gave 4.4:1, white gives 5.5-7.6:1"
+    },
+    "colors.activityBar.inactiveForeground": {
+      "value": "#82759f",
+      "why": "inactive text on the darker chrome surface measured 2.2-2.7:1 from the muted map; this gives about 3.4:1"
+    },
+    "colors.titleBar.inactiveForeground": {
+      "value": "#82759f",
+      "why": "inactive text on the darker chrome surface measured 2.2-2.7:1 from the muted map; this gives about 3.4:1"
+    },
+    "colors.tab.inactiveForeground": {
+      "value": "#82759f",
+      "why": "inactive text on the darker chrome surface measured 2.2-2.7:1 from the muted map; this gives about 3.4:1"
+    },
+    "colors.tab.unfocusedInactiveForeground": {
+      "value": "#82759f",
+      "why": "mapped value measured 2.56:1 on the tab strip; same value as tab.inactiveForeground (3.16:1)"
+    },
+    "colors.editorInlayHint.foreground": {
+      "value": "#6f6293",
+      "why": "comment-purple measured 4.22:1 on the inlay pill; 5.0:1 here"
+    },
+    "colors.terminal.ansiBlack": {
+      "value": "#2f2b3a",
+      "why": "dark's ansiBlack is the recessed surface, which maps to near-white; a light terminal needs the text colour"
+    },
+    "colors.terminal.ansiBrightWhite": {
+      "value": "#7a7194",
+      "why": "the map made it the darkest text; bright white must stay lighter than ansiWhite"
+    },
+    "colors.editor.findMatchBackground": {
+      "value": "#ffcc8099",
+      "why": "mapped honey is dark brown; the original honey hex as a translucent wash reads as a highlight on light"
+    },
+    "colors.editor.findMatchHighlightBackground": {
+      "value": "#ffcc8055",
+      "why": "same as editor.findMatchBackground"
+    },
+    "colors.peekViewEditor.matchHighlightBackground": {
+      "value": "#ffcc8066",
+      "why": "same as editor.findMatchBackground"
+    },
+    "colors.scrollbar.shadow": {
+      "value": "#2f2b3a26",
+      "why": "dark shadow colour maps to a light surface, which is invisible; a shadow must be dark"
+    },
+    "colors.widget.shadow": {
+      "value": "#2f2b3a29",
+      "why": "same as scrollbar.shadow"
+    },
+    "colors.scrollbarSlider.background": {
+      "value": "#776a9966",
+      "why": "mapped surface hex is nearly the background colour, so the slider vanished; use the comment purple"
+    },
+    "colors.scrollbarSlider.hoverBackground": {
+      "value": "#776a99aa",
+      "why": "same as scrollbarSlider.background"
+    },
+    "colors.scrollbarSlider.activeBackground": {
+      "value": "#776a99dd",
+      "why": "same as scrollbarSlider.background"
+    },
+    "colors.minimapSlider.background": {
+      "value": "#776a9933",
+      "why": "same as scrollbarSlider.background"
+    },
+    "colors.minimapSlider.hoverBackground": {
+      "value": "#776a9955",
+      "why": "same as scrollbarSlider.background"
+    },
+    "colors.minimapSlider.activeBackground": {
+      "value": "#776a9977",
+      "why": "same as scrollbarSlider.background"
+    }
+  }
+}
