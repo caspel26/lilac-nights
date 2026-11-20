@@ -5,15 +5,18 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Theme file is valid JSON
         run: |
@@ -25,8 +28,15 @@ jobs:
       - name: Every color is a valid hex value
         run: node .github/scripts/check-colors.mjs
 
+      - name: Contrast, rank order and neighbour separation
+        run: node .github/scripts/check-contrast.mjs
+
+      - name: Generated variants are up to date
+        if: ${{ hashFiles('tools/build-variants.mjs') != '' }}
+        run: node tools/build-variants.mjs --check
+
       - name: Package
-        run: npx --yes @vscode/vsce package --out /tmp/lilac-nights.vsix
+        run: npx --yes @vscode/vsce@4.1.1 package --out /tmp/lilac-nights.vsix
 
       - name: Report package size
         run: ls -lh /tmp/lilac-nights.vsix
