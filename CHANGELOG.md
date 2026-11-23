@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.3]
+
+TOML gets its own rules. Table and array-table headers (`[tool.poetry]`,
+`[[bin]]`) are honey like other namespaces and types, dates and times share the
+coral of numbers, and a `#:schema` directive reads as a comment. Keys, strings,
+escapes, numbers, booleans and punctuation were already covered by the generic
+rules and are unchanged. VS Code ships no TOML grammar, so these need an
+extension that provides one, such as Even Better TOML. `samples/sample.toml`
+exercises every construct. Both themes get the same three rules; no existing
+color changes.
+
 ## [1.1.2]
 
 Lilac Nights Light gets a new white. The editor, sidebar, activity bar, panel,

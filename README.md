@@ -255,7 +255,9 @@ and debug views, notebooks, diff and merge decorations, and all 16 terminal ANSI
 colors — in both **Dark** and **Light**.
 
 Extra grammar rules for **Python, TypeScript, Java, C#, PHP, Vue, Markdown, YAML,
-TOML, Dockerfile, shell, SQL, `.env`, CSS,** and git commit messages.
+TOML, Dockerfile, shell, SQL, `.env`, CSS,** and git commit messages. VS Code has no
+built-in TOML grammar, so the TOML rules need an extension that provides one, for
+example [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml).
 
 ## Install
 
