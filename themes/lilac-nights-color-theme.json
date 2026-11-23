@@ -562,6 +562,26 @@
       "settings": { "foreground": "#d7b8ff" }
     },
     {
+      "name": "TOML — table headers",
+      "scope": ["support.type.property-name.table.toml", "support.type.property-name.array.toml"],
+      "settings": { "foreground": "#ffcc80" }
+    },
+    {
+      "name": "TOML — dates & times",
+      "scope": [
+        "constant.other.time.date.toml",
+        "constant.other.time.time.toml",
+        "constant.other.time.datetime.offset.toml",
+        "constant.other.time.datetime.local.toml"
+      ],
+      "settings": { "foreground": "#ff9d7a" }
+    },
+    {
+      "name": "TOML — directives",
+      "scope": ["meta.preprocessor.toml", "punctuation.definition.meta.preprocessor.toml"],
+      "settings": { "foreground": "#8b7eae", "fontStyle": "italic" }
+    },
+    {
       "name": "YAML anchors & aliases",
       "scope": ["punctuation.definition.anchor.yaml", "variable.other.alias.yaml", "entity.name.type.anchor.yaml"],
       "settings": { "foreground": "#f18ce8", "fontStyle": "italic" }

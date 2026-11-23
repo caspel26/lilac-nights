@@ -1,0 +1,68 @@
+#:schema https://json.schemastore.org/pyproject.json
+# Package manifest: every TOML construct in one file.
+
+title = "Lilac Nights"        # basic string
+version = '1.1.3'             # literal string
+"quoted key" = true
+'literal key' = false
+site.name = "dotted"          # dotted key
+site . "odd key".id = 42
+
+[package]
+name = "lilac-nights"
+edition = "2021"
+description = "A \"purple\" theme\twith \u00e9 and \U0001F49C escapes\n"
+bad-escape = "oops \q"
+regex = 'C:\Users\nodejs\templates'
+license = { text = "MIT" }                       # inline table
+authors = [{ name = "A. Dev", email = "a@dev.io" }]
+keywords = ["vscode", "theme", 'toml']           # array
+matrix = [
+  [1, 2, 3],
+  [0x1F, 0o17, 0b1010],   # hex, octal, binary
+  # comment inside an array
+]
+readme = """
+Multi-line basic string with an \
+escaped newline and a tab\tinside.
+"""
+notes = '''
+Multi-line literal string, no \escapes here.
+'''
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+requests = { version = "^2.31", extras = ["socks"], optional = true }
+
+[tool."quoted.table".sub]
+int-plain = 1_000
+int-signed = -17
+float-simple = 3.1415
+float-exp = 6.02e23
+float-signed = +1.5E-3
+inf-pos = inf
+inf-neg = -inf
+nan-val = nan
+nan-signed = +nan
+on = true
+off = false
+
+[dates]
+offset-dt = 1979-05-27T07:32:00Z
+offset-dt2 = 1979-05-27 00:32:00.999999-07:00
+local-dt = 1979-05-27T07:32:00
+local-date = 1979-05-27
+local-time = 07:32:00.5
+
+[[bin]]
+name = "cli"
+path = "src/main.rs"
+
+[[bin]]
+name = "server"
+
+[[tool.items.sub]]
+id = 1
+
+[target.'cfg(windows)'.dependencies]
+winapi = "0.3"
